@@ -6,7 +6,7 @@
 /*   By: kasoares <kasoares@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/20 15:56:33 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/07/24 12:31:52 by kasoares         ###   ########.fr       */
+/*   Updated: 2026/07/24 13:52:20 by kasoares         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ typedef struct benchmark
 
 typedef enum s_opcount
 {
-	bench
 	SA,
 	SB,
 	SS,
@@ -54,4 +53,5 @@ typedef enum s_opcount
 	PA,
 	PB,
 	TOTAL
+
 } t_opcount;
