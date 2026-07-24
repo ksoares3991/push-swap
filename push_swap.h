@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kasoares <kasoares@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/20 15:56:33 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/07/23 14:13:39 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/07/24 12:31:52 by kasoares         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,3 +33,25 @@ typedef struct s_stack
 	t_node	*tail;
 	int		size;
 }	t_stack;
+
+typedef struct benchmark
+{
+	t_opcount count_op[12];
+}	t_bench;
+
+typedef enum s_opcount
+{
+	bench
+	SA,
+	SB,
+	SS,
+	RA,
+	RB,
+	RR,
+	RRA,
+	RRB,
+	RRR,
+	PA,
+	PB,
+	TOTAL
+} t_opcount;
