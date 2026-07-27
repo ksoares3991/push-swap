@@ -6,11 +6,11 @@
 /*   By: kasoares <kasoares@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/23 17:17:58 by kasoares          #+#    #+#             */
-/*   Updated: 2026/07/27 12:44:30 by kasoares         ###   ########.fr       */
+/*   Updated: 2026/07/27 18:42:30 by kasoares         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../push_swap.h"
 
 static void	do_push(t_stack *stack_src, t_stack *stack_dst)
 {
@@ -35,21 +35,24 @@ static void	do_push(t_stack *stack_src, t_stack *stack_dst)
 	stack_dst->size++;
 }
 
-void	pa(t_stack *a, t_stack *b)
+void	pa(t_stack *a, t_stack *b, t_state *state)
 {
 	if (!b || b->size == 0)
 		return ;
 	do_push(b, a);
-	write(1, "pa\n", 3);
-	count_op[PA]++;
-	count_op[TOTAL]++;
+	if (state->print_mode == PRINT_ON)
+		write(1, "pa\n", 3);
+	state->bench->count_op[PA]++;
+	state->bench->count_op[TOTAL]++;
 }
-void	pb(t_stack *a, t_stack *b)
+
+void	pb(t_stack *a, t_stack *b, t_state *state)
 {
 	if (!a || a ->size == 0)
 		return ;
 	do_push(a, b);
-	write(1, "pb\n", 3);
-	count_op[PB]++;
-	count_op[TOTAL]++;
+	if (state->print_mode == PRINT_ON)
+		write(1, "pb\n", 3);
+	state->bench->count_op[PB]++;
+	state->bench->count_op[TOTAL]++;
 }
