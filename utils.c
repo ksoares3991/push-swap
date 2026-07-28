@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 16:36:14 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/07/22 18:52:55 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/07/28 15:10:51 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,11 @@ int ft_isnumber(char *s)
 		if (ft_isdigit(s[i]) && !(s[i + 1]))
 			return (1);
 		if (!ft_isdigit(s[i]))
+		{
+			ft_putstr_fd("Error", 2);
+			exit(1);
 			return (0);
+		}
 		if (ft_isdigit(s[i]))
 			i++;
 	}
