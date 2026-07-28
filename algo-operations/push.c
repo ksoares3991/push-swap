@@ -6,11 +6,11 @@
 /*   By: kasoares <kasoares@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/23 17:17:58 by kasoares          #+#    #+#             */
-/*   Updated: 2026/07/24 13:26:33 by kasoares         ###   ########.fr       */
+/*   Updated: 2026/07/27 18:42:30 by kasoares         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../push_swap.h"
 
 static void	do_push(t_stack *stack_src, t_stack *stack_dst)
 {
@@ -20,32 +20,39 @@ static void	do_push(t_stack *stack_src, t_stack *stack_dst)
 	if (!stack_src)
 		return ;
 	src = stack_src->head;
-	if (stack_dst->size <= 0)
-	{
-		stack_dst->head = src;
-		stack_dst->tail = src;
-		stack_dst->head->prev = NULL;
-		stack_dst->head->next = NULL;
-	}
+	stack_src->head = src->next;
+	if (stack_src->head != NULL)
+		stack_src->head->prev = NULL;
 	else
-	{
-		src->next = stack_dst->head;
+		stack_src->tail = NULL;
+	stack_src->size--;
+	src->next = stack_dst->head;
+	src->prev = NULL;
+	if (stack_dst->size == 0)
+		stack_dst->tail = src;
 		stack_dst->head->prev = src;
-		stack_dst->head = src;
-		stack_dst->tail->prev = stack_dst->head->next; //check redundance
-	}
+	stack_dst->head = src;
+	stack_dst->size++;
 }
-void	pa(t_stack *stack_a, t_stack *stack_b)
+
+void	pa(t_stack *a, t_stack *b, t_state *state)
 {
-	do_push(stack_a, stack_b);
-	write(1, "pa\n", 3);
-	count_op[PA]++;
-	count_op[TOTAL]++;
+	if (!b || b->size == 0)
+		return ;
+	do_push(b, a);
+	if (state->print_mode == PRINT_ON)
+		write(1, "pa\n", 3);
+	state->bench->count_op[PA]++;
+	state->bench->count_op[TOTAL]++;
 }
-void	pb(t_stack *stack_b, t_stack *stack_a)
+
+void	pb(t_stack *a, t_stack *b, t_state *state)
 {
-	do_swap(stack_b, stack_a);
-	write(1, "pb\n", 3);
-	count_op[PB]++;
-	count_op[TOTAL]++;
+	if (!a || a ->size == 0)
+		return ;
+	do_push(a, b);
+	if (state->print_mode == PRINT_ON)
+		write(1, "pb\n", 3);
+	state->bench->count_op[PB]++;
+	state->bench->count_op[TOTAL]++;
 }

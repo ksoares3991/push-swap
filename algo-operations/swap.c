@@ -6,11 +6,11 @@
 /*   By: kasoares <kasoares@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/23 15:58:30 by kasoares          #+#    #+#             */
-/*   Updated: 2026/07/23 19:08:09 by kasoares         ###   ########.fr       */
+/*   Updated: 2026/07/27 18:42:09 by kasoares         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../push_swap.h"
 
 static void	do_swap(t_stack *stack)
 {
@@ -25,25 +25,31 @@ static void	do_swap(t_stack *stack)
 	second->next = first;
 	stack->head = second;
 }
-void	sa(t_stack *stack_a)
+
+void	sa(t_stack *a, t_state *state)
 {
-	do_swap(stack_a);
-	write(1, "sa\n", 3);
-	count_op[SA]++;
-	count_op[TOTAL]++;
+	do_swap(a);
+	if (state->print_mode == PRINT_ON)
+		write(1, "sa\n", 3);
+	state->bench->count_op[SA]++;
+	state->bench->count_op[TOTAL]++;
 }
-void	sb(t_stack *stack_b)
+
+void	sb(t_stack *b, t_state *state)
 {
-	do_swap(stack_b);
-	write(1, "sb\n", 3);
-	count_op[SB]++;
-	count_op[TOTAL]++;
+	do_swap(b);
+	if (state->print_mode == PRINT_ON)
+		write(1, "sb\n", 3);
+	state->bench->count_op[SB]++;
+	state->bench->count_op[TOTAL]++;
 }
-void	ss(t_stack *stack_a, t_stack *stack_b)
+
+void	ss(t_stack *a, t_stack *b, t_state *state)
 {
-	do_swap(stack_a);
-	do_swap(stack_b);
-	write(1, "ss\n", 3);
-	count_op[SS]++;
-	count_op[TOTAL]++;
+	do_swap(a);
+	do_swap(b);
+	if (state->print_mode == PRINT_ON)
+		write(1, "ss\n", 3);
+	state->bench->count_op[SS]++;
+	state->bench->count_op[TOTAL]++;
 }
