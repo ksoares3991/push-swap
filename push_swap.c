@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 16:36:17 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/07/28 14:15:09 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/07/28 15:17:25 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void add_to_stack(char *p_str, t_stack *a)
 		a->tail->next = new_node;
 		a->tail = new_node;
 	}
+	a->size++;
+	ft_printf("Size atual: %d\n", a->size);
 }
 int	parser(int ac, char **av, t_stack *a)
 {
@@ -75,11 +77,6 @@ int	parser(int ac, char **av, t_stack *a)
 		{
 			if (ft_isnumber(parsed_str[k]))
 				add_to_stack(parsed_str[k], a);
-			if (!ft_isnumber(parsed_str[k]))
-			{
-				ft_putstr_fd("Error", 2);
-				return (0);
-			}
 			k++;
 		}
 		i++;
@@ -87,29 +84,36 @@ int	parser(int ac, char **av, t_stack *a)
 	return (1);
 }
 
-void init_stack (t_stack *a)
+t_stack *init_stack (void)
 {
-	a->size = 0;
-	a->tail = NULL;
-	a->head = NULL;
+	t_stack *stack;
+	
+	stack = malloc(sizeof(t_stack));
+		if (!stack)
+			return NULL;
+	stack->size = 0;
+	stack->tail = NULL;
+	stack->head = NULL;
+	return (stack);
 }
 
 int	main(int ac, char **av)
 {
 	t_stack *a;
+	t_stack *b;
 	t_node *act;
-
-	a = malloc(sizeof(t_stack));
-	init_stack(a);
+	
+	a = init_stack();
+	b = init_stack();
 
 	parser(ac, av, a);
-	
-	act = a->head;
+		act = a->head;
 	while(act)
 	{
 		ft_printf("Nó atual: %d\n", act->number);
 		act = act->next;
 	}
+	ft_printf("Size final: %d", a->size);
 	free(act);
 	free(a);
 }
