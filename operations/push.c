@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kasoares <kasoares@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/23 17:17:58 by kasoares          #+#    #+#             */
-/*   Updated: 2026/07/29 18:10:22 by kasoares         ###   ########.fr       */
+/*   Updated: 2026/07/29 18:52:32 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,13 @@ void	pa(t_state *state)
 	if (!state->b || state->b->size == 0)
 		return ;
 	do_push(state->b, state->a);
-	if (state->print == PRINT_ON)
+	if (state->print_mode == PRINT_ON)
 		write(1, "pa\n", 3);
-	state->bench->count_op[PA]++;
-	state->bench->count_op[TOTAL]++;
+	if (state->bench)
+	{
+    	state->bench->count_op[PA]++;
+    	state->bench->count_op[TOTAL]++;
+	}
 }
 
 void	pb(t_state *state)
@@ -53,6 +56,9 @@ void	pb(t_state *state)
 	do_push(state->a, state->b);
 	if (state->print_mode == PRINT_ON)
 		write(1, "pb\n", 3);
-	state->bench->count_op[PB]++;
-	state->bench->count_op[TOTAL]++;
+	if (state->bench)
+	{
+    	state->bench->count_op[PB]++;
+    	state->bench->count_op[TOTAL]++;
+	}
 }

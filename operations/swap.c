@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   swap.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kasoares <kasoares@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/23 15:58:30 by kasoares          #+#    #+#             */
-/*   Updated: 2026/07/29 18:11:05 by kasoares         ###   ########.fr       */
+/*   Updated: 2026/07/29 18:55:05 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,11 @@ void	sa(t_state *state)
 	do_swap(state->a);
 	if (state->print_mode == PRINT_ON)
 		write(1, "sa\n", 3);
-	state->bench->count_op[SA]++;
-	state->bench->count_op[TOTAL]++;
+	if (state->bench)
+	{
+		state->bench->count_op[SA]++;
+		state->bench->count_op[TOTAL]++;
+	}
 }
 
 void	sb(t_state *state)
@@ -46,8 +49,11 @@ void	sb(t_state *state)
 	do_swap(state->b);
 	if (state->print_mode == PRINT_ON)
 		write(1, "sb\n", 3);
-	state->bench->count_op[SB]++;
-	state->bench->count_op[TOTAL]++;
+	if (state->bench)
+	{
+		state->bench->count_op[SB]++;
+		state->bench->count_op[TOTAL]++;
+	}
 }
 
 void	ss(t_state *state)
@@ -56,6 +62,9 @@ void	ss(t_state *state)
 	do_swap(state->b);
 	if (state->print_mode == PRINT_ON)
 		write(1, "ss\n", 3);
-	state->bench->count_op[SS]++;
-	state->bench->count_op[TOTAL]++;
+	if (state->bench)
+	{
+		state->bench->count_op[SS]++;
+		state->bench->count_op[TOTAL]++;
+	}
 }
