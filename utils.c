@@ -6,33 +6,48 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 16:36:14 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/07/28 15:10:51 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/07/29 18:56:36 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
+int is_int(long n)
+{
+	if(n > 2147483647 || n < -2147483648)
+		{
+			ft_putstr_fd("Error\n", 2);
+			exit(1);
+		}
+	return (1);
+}
+void print_error()
+{
+	ft_putstr_fd("Error\n", 2);
+	exit(1);
+}
 int ft_isnumber(char *s)
 {
-	long i;
+    long i;
 
-	i = 0;
-	if (!s)
-		return (0);
-	while(s[i])
-	{
-		if (ft_isdigit(s[i]) && !(s[i + 1]))
-			return (1);
-		if (!ft_isdigit(s[i]))
-		{
-			ft_putstr_fd("Error", 2);
-			exit(1);
-			return (0);
-		}
-		if (ft_isdigit(s[i]))
-			i++;
-	}
-	return (0);
+    i = 0;
+	(void)s;
+    if (!s || s[0] == '\0')
+    	print_error();
+    if (s[i] == '-')
+        i++;
+    if (!s[i])
+        print_error();
+    while (s[i])
+    {
+        if (!ft_isdigit(s[i]))
+            print_error();
+        i++;
+    }
+    if (!is_int(ft_atol(s)))
+        print_error();
+
+    return (1);
 }
 
 long	ft_atol (char *s)

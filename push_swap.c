@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 16:36:17 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/07/28 15:17:25 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/07/29 18:45:02 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,38 @@
 		"--bench"
 	};
 
-	return (&*flags);
+	return (flags);
 }
-char *search_flag(char *av)
+int search_flag(char *av)
 {
 	int	i;
 	
 	i = 0;
 	if (!av)
-		return(("Error"));
-	while (i < 5)
+		return((0));
+	while (i < 6)
 	{
 		if (ft_strcmp((get_flags()[i]), av))
-			return (get_flags()[i]);
+			return (i);
 		i++;
 	}
-	return ("Error");
+	return (0);
 }
 
+int is_dup(t_stack *a, int n)
+{
+	t_node *current_node;
+
+	current_node = a->head;
+	while (current_node)
+	{
+		if(current_node->number == n)
+			print_error();
+		else
+			current_node = current_node->next;
+	}
+	return (1);
+}
 void add_to_stack(char *p_str, t_stack *a)
 {
 	t_node *new_node;
@@ -56,27 +70,46 @@ void add_to_stack(char *p_str, t_stack *a)
 	}
 	else
 	{
-		a->tail->next = new_node;
-		a->tail = new_node;
+		if (is_dup(a, ft_atol(p_str)))
+		{
+			a->tail->next = new_node;
+			a->tail = new_node;
+		}
 	}
 	a->size++;
-	ft_printf("Size atual: %d\n", a->size);
 }
-int	parser(int ac, char **av, t_stack *a)
+
+int add_and_search(char *parsed_str, t_stack *a, t_state *config)
+{
+	if (ft_isnumber(parsed_str))
+	{
+		add_to_stack(parsed_str, a);
+		return (1);
+	}
+		if (search_flag(parsed_str) && search_flag(parsed_str) < 5)
+		{
+			config->total_flags++;
+			config->strategy = search_flag(parsed_str);
+			return (1);
+		}
+	return (0);	
+}
+int	parser(int ac, char **av, t_stack *a, t_state *config)
 {
 	char **parsed_str;
 	int i;
 	int k;
 
-	i = 1;	
+	i = 1;
 	while (i < ac)
-	{			
+	{
+		if (!av[i])
+			exit(1);
 		k = 0;
 		parsed_str = ft_split(av[i], ' ');
 		while (parsed_str && parsed_str[k])
 		{
-			if (ft_isnumber(parsed_str[k]))
-				add_to_stack(parsed_str[k], a);
+			add_and_search(*parsed_str, a, config);
 			k++;
 		}
 		i++;
@@ -97,24 +130,64 @@ t_stack *init_stack (void)
 	return (stack);
 }
 
+float get_disorder(t_stack *a)
+/** 
+Low disorder: if disorder < 0.2, your chosen method must run in O(n2) time.
+Medium disorder: if 0.2 ≤ disorder < 0.5, your chosen method must run in
+O(n√n) time.
+High disorder: if disorder ≥ 0.5, your chosen method must run in O(n log n)
+time
+**/
+{
+	t_node	*i;
+	t_node	*j;
+	float mistakes;
+	float total_pairs;
+	total_pairs = (a->size * (a->size - 1) / 2);
+	mistakes = 0;
+	i = a->head;
+	if ((a->size) <= 1)
+		return (0.0);
+	while (i)
+	{
+		j = i->next;
+		while (j)
+		{
+			if (i->number > j->number)
+				mistakes++;
+			j = j->next;
+		}
+		i = i->next;
+	}
+	return ((mistakes / total_pairs));
+}
+
 int	main(int ac, char **av)
 {
 	t_stack *a;
 	t_stack *b;
-	t_node *act;
-	
+	t_state *config;
+	t_node *current;
+
 	a = init_stack();
 	b = init_stack();
-
-	parser(ac, av, a);
-		act = a->head;
-	while(act)
+	config = malloc(sizeof(t_state));
+	config->a = a;
+	config->b = b;
+	parser(ac, av, a, config);	
+	int final_disorder = ((get_disorder(a)) * 10000);
+	ft_printf("[bench] disorder: %d,%d%%", (final_disorder / 100),
+	(final_disorder % 100));
+	ft_printf("\nestrategia: %d", config->strategy);
+	selection_sort(config, 0, NULL);
+	current = malloc(sizeof(t_bench));
+	current = a->head;
+	while (current)
 	{
-		ft_printf("Nó atual: %d\n", act->number);
-		act = act->next;
+		ft_printf("\n%d", current->number);
+		current = current->next;
 	}
-	ft_printf("Size final: %d", a->size);
-	free(act);
+	free(current);
 	free(a);
 }
 

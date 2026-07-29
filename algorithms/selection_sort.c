@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   selection_sort.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kasoares <kasoares@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 14:26:06 by kasoares          #+#    #+#             */
-/*   Updated: 2026/07/29 17:25:23 by kasoares         ###   ########.fr       */
+/*   Updated: 2026/07/29 18:41:52 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static int	get_node_index(t_stack *stack, t_node *node)
 	t_node	*current;
 	int		i;
 
+	if (!stack || ! node)
+		return (-1);
 	i = 0;
 	current = stack->head;
 	while (current != NULL && current != node)
@@ -32,6 +34,8 @@ t_node	*find_smallest(t_stack *stack)
 	t_node	*smallest;
 	t_node	*current;
 
+	if (!stack || !stack->head)
+		return (NULL);
 	smallest = stack->head;
 	current = stack->head;
 	while (current != NULL)
@@ -48,7 +52,7 @@ void	order_two(t_state *state)
 	int	first;
 	int	second;
 
-	if (!state->a || state->a->size != 2)
+	if (!state || !state->a || state->a->size != 2)
 		return ;
 	first = state->a->head->number;
 	second = state->a->head->next->number;
@@ -62,7 +66,7 @@ void	order_three(t_state *state)
 	int	second;
 	int	third;
 
-	if (!state->a || state->a->size != 3)
+	if (!state || !state->a || state->a->size != 3)
 		return ;
 	first = state->a->head->number;
 	second = state->a->head->next->number;

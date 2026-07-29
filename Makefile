@@ -6,7 +6,7 @@
 #    By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/07/17 16:04:49 by vicdos-s          #+#    #+#              #
-#    Updated: 2026/07/21 17:06:24 by vicdos-s         ###   ########.fr        #
+#    Updated: 2026/07/29 18:23:20 by vicdos-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,25 +21,27 @@ LIBFT       = $(LIBFT_DIR)/libft.a
 PRINTF_DIR  = ./ft_printf/
 PRINTF      = $(PRINTF_DIR)/libftprintf.a
 
-# Aqui você lista apenas os arquivos .c do seu push_swap em si!
 SRCS_DIR    = .
 SRCS        = $(SRCS_DIR)/push_swap.c \
-              $(SRCS_DIR)/utils.c
+              $(SRCS_DIR)/utils.c \
+              operations/push.c \
+              operations/rev_rotate.c \
+              operations/rotate.c \
+              operations/swap.c \
+              algorithms/selection_sort.c \
+
 OBJS        = $(SRCS:.c=.o)
 
-# Adicionado o include do printf
 INCLUDES    = -I $(LIBFT_DIR) -I $(PRINTF_DIR) -I $(PRINTF_DIR)mandatory -I $(SRCS_DIR)
 
 all: $(NAME)
 
-# A regra agora usa o compilador (cc) para linkar os .o e as bibliotecas .a
 $(NAME): $(LIBFT) $(PRINTF) $(OBJS)
 	$(CC) -g $(CFLAGS) $(OBJS) $(LIBFT) $(PRINTF) -o $(NAME)
         
 $(LIBFT): FORCE
 	make -C $(LIBFT_DIR)
 
-# Ensinando o Make a compilar o printf antes do push_swap
 $(PRINTF): FORCE
 	make -C $(PRINTF_DIR)
 
