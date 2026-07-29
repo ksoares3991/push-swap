@@ -6,16 +6,16 @@
 /*   By: kasoares <kasoares@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/23 17:18:02 by kasoares          #+#    #+#             */
-/*   Updated: 2026/07/29 16:53:11 by kasoares         ###   ########.fr       */
+/*   Updated: 2026/07/29 18:10:33 by kasoares         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void do_rev_rotate(t_stack *stack)
+void	do_rev_rotate(t_stack *stack)
 {
-	t_node *first;
-	t_node *last;
+	t_node	*first;
+	t_node	*last;
 
 	if (!stack || stack->size < 2)
 		return ;

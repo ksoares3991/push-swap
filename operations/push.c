@@ -6,15 +6,15 @@
 /*   By: kasoares <kasoares@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/23 17:17:58 by kasoares          #+#    #+#             */
-/*   Updated: 2026/07/29 16:53:01 by kasoares         ###   ########.fr       */
+/*   Updated: 2026/07/29 18:10:22 by kasoares         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void do_push(t_stack *src, t_stack *dst)
+void	do_push(t_stack *src, t_stack *dst)
 {
-	t_node *node_to_move;
+	t_node	*node_to_move;
 
 	if (!src || src->size == 0)
 		return ;
@@ -35,18 +35,18 @@ void do_push(t_stack *src, t_stack *dst)
 	dst->size++;
 }
 
-void pa(t_state *state)
+void	pa(t_state *state)
 {
 	if (!state->b || state->b->size == 0)
 		return ;
 	do_push(state->b, state->a);
-	if (state->print == TRUE)
+	if (state->print == PRINT_ON)
 		write(1, "pa\n", 3);
 	state->bench->count_op[PA]++;
 	state->bench->count_op[TOTAL]++;
 }
 
-void pb(t_state *state)
+void	pb(t_state *state)
 {
 	if (!state->a || state->a->size == 0)
 		return ;
