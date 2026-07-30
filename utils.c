@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 16:36:14 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/07/30 13:15:15 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/07/30 14:10:37 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,9 @@
 
 void print_error_debug(t_state *state)
 {
-    // 1. O print de erro obrigatório do push_swap na saída de erro (stderr)
-    ft_putstr_fd("Error\n", 2);
-
-    // 2. Início do Dump de Debug
+    // 1. Início do Dump de Debug
     printf("\n============================================\n");
-    printf("              CRASH DUMP (DEBUG)            \n");
+    printf("                  (DEBUG)            \n");
     printf("============================================\n");
 
     if (!state)
@@ -48,7 +45,6 @@ void print_error_debug(t_state *state)
         {
             printf("%d ", curr_a->number);
             curr_a = curr_a->next;
-            // Prevenção de loop infinito se a sua lista for circular
             if (curr_a == state->a->head) break; 
         }
         printf("[TAIL]\n");
@@ -65,7 +61,6 @@ void print_error_debug(t_state *state)
         {
             printf("%d ", curr_b->number);
             curr_b = curr_b->next;
-            // Prevenção de loop infinito se a sua lista for circular
             if (curr_b == state->b->head) break;
         }
         printf("[TAIL]\n");

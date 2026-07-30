@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 16:36:17 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/07/30 13:12:06 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/07/30 14:08:50 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 	char	**get_flags(void)
 {
 	static char	*flags[6] = {
-		"\0",
+		"",
 		"--simple",
 		"--medium",
 		"--complex",
@@ -81,8 +81,6 @@ void add_to_stack(char *p_str, t_stack *a)
 
 int add_and_search(char *parsed_str, t_stack *a, t_state *config)
 {
-	if ((config->bench_mode > 1) || config->total_flags > 1)
-		print_error();
 	if (ft_isnumber(parsed_str))
 	{
 		add_to_stack(parsed_str, a);
@@ -94,12 +92,12 @@ int add_and_search(char *parsed_str, t_stack *a, t_state *config)
 			config->strategy = search_flag(parsed_str);
 			return (1);
 		}
-			if (search_flag(parsed_str) && search_flag(parsed_str) == 5)
+		if (search_flag(parsed_str) && search_flag(parsed_str) == 5)
 		{
 			config->bench_mode++;
 			return (1);
 		}
-	return (0);	
+	return (1);	
 }
 int	parser(int ac, char **av, t_stack *a, t_state *config)
 {
@@ -116,10 +114,15 @@ int	parser(int ac, char **av, t_stack *a, t_state *config)
 		parsed_str = ft_split(av[i], ' ');
 		while (parsed_str && parsed_str[k])
 		{
-			add_and_search(*parsed_str, a, config);
+			add_and_search(parsed_str[k], a, config);
 			k++;
 		}
 		i++;
+		if ((config->bench_mode > 1) || config->total_flags > 1)
+		{
+			print_error_debug(config);
+			print_error();
+		}
 	}
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/20 15:56:33 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/07/30 13:15:43 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/07/30 13:18:08 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,5 +115,5 @@ int		ft_strcmp(const char *s1, char *s2);
 int 	is_int(long n);
 void	print_error();
 int 	search_flag(char *av);
-void 	print_error_debug(t_state *state) // apagar essa joça antes de submeter projeto
+void 	print_error_debug(t_state *state); // apagar essa joça antes de submeter projeto
 #endif
