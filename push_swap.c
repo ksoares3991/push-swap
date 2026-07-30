@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 16:36:17 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/07/29 18:45:02 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/07/30 13:12:06 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ void add_to_stack(char *p_str, t_stack *a)
 
 int add_and_search(char *parsed_str, t_stack *a, t_state *config)
 {
+	if ((config->bench_mode > 1) || config->total_flags > 1)
+		print_error();
 	if (ft_isnumber(parsed_str))
 	{
 		add_to_stack(parsed_str, a);
@@ -90,6 +92,11 @@ int add_and_search(char *parsed_str, t_stack *a, t_state *config)
 		{
 			config->total_flags++;
 			config->strategy = search_flag(parsed_str);
+			return (1);
+		}
+			if (search_flag(parsed_str) && search_flag(parsed_str) == 5)
+		{
+			config->bench_mode++;
 			return (1);
 		}
 	return (0);	
@@ -128,6 +135,23 @@ t_stack *init_stack (void)
 	stack->tail = NULL;
 	stack->head = NULL;
 	return (stack);
+}
+
+t_state *init_config(void)
+{
+	t_state *config;
+
+	config = malloc(sizeof(t_state));
+	config->strategy = 0;
+	config->bench_mode = 0;
+	config->total_flags = 0;
+	config->a = NULL;
+	config->b = NULL;
+	config->bench = NULL;
+	config->print_mode = 0;
+	config->total_elements = 0;
+	return (config);
+	
 }
 
 float get_disorder(t_stack *a)
@@ -171,14 +195,15 @@ int	main(int ac, char **av)
 
 	a = init_stack();
 	b = init_stack();
-	config = malloc(sizeof(t_state));
+	config = init_config();
 	config->a = a;
 	config->b = b;
 	parser(ac, av, a, config);	
 	int final_disorder = ((get_disorder(a)) * 10000);
-	ft_printf("[bench] disorder: %d,%d%%", (final_disorder / 100),
+	if (config->bench_mode)
+		ft_printf("[bench] disorder: %d,%d%%\n", (final_disorder / 100),
 	(final_disorder % 100));
-	ft_printf("\nestrategia: %d", config->strategy);
+	ft_printf("estrategia: %d", config->strategy);
 	selection_sort(config, 0, NULL);
 	current = malloc(sizeof(t_bench));
 	current = a->head;
