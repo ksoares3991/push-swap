@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 16:36:14 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/07/29 18:56:36 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/07/30 12:41:05 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int ft_isnumber(char *s)
 
     i = 0;
 	(void)s;
+	if (search_flag(s))
+		return (0);
     if (!s || s[0] == '\0')
     	print_error();
     if (s[i] == '-')
@@ -50,7 +52,7 @@ int ft_isnumber(char *s)
     return (1);
 }
 
-long	ft_atol (char *s)
+long	ft_atol(char *s)
 {
 	long	i;
 	long	result;

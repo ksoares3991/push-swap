@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/20 15:56:33 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/07/29 18:25:23 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/07/30 12:38:38 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,4 +114,5 @@ int		ft_isnumber(char *s);
 int		ft_strcmp(const char *s1, char *s2);
 int 	is_int(long n);
 void	print_error();
+int 	search_flag(char *av);
 #endif
