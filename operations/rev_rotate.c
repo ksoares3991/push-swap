@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/23 17:18:02 by kasoares          #+#    #+#             */
-/*   Updated: 2026/07/29 18:54:04 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/07/30 14:48:32 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	rra(t_state *state)
 {
 	do_rev_rotate(state->a);
 	if (state->print_mode == PRINT_ON)
-		write(1, "rra\n", 3);
+		write(1, "rra\n", 4);
 	if (state->bench)
 	{
 		state->bench->count_op[RRA]++;
@@ -45,7 +45,7 @@ void	rrb(t_state *state)
 {
 	do_rev_rotate(state->b);if (state->bench)
 	if (state->print_mode == PRINT_ON)
-		write(1, "rrb\n", 3);
+		write(1, "rrb\n", 4);
 	if (state->bench)
 	{
 		state->bench->count_op[RRB]++;
@@ -58,7 +58,7 @@ void	rrr(t_state *state)
 	do_rev_rotate(state->a);
 	do_rev_rotate(state->b);
 	if (state->print_mode == PRINT_ON)
-		write(1, "rrr\n", 3);
+		write(1, "rrr\n", 4);
 	if (state->bench)
 	{
 		state->bench->count_op[RRR]++;
