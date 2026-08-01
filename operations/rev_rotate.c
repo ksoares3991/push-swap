@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   rev_rotate.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kasoares <kasoares@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/23 17:18:02 by kasoares          #+#    #+#             */
-/*   Updated: 2026/07/30 14:48:32 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/01 18:21:11 by kasoares         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	do_rev_rotate(t_stack *stack)
+static int	do_rev_rotate(t_stack *stack)
 {
 	t_node	*first;
 	t_node	*last;
 
 	if (!stack || stack->size < 2)
-		return ;
+		return (0);
 	first = stack->head;
 	last = stack->tail;
 	stack->tail = last->prev;
@@ -27,14 +27,19 @@ void	do_rev_rotate(t_stack *stack)
 	last->prev = NULL;
 	first->prev = last;
 	stack->head = last;
+	return (1);
 }
 
 void	rra(t_state *state)
 {
-	do_rev_rotate(state->a);
-	if (state->print_mode == PRINT_ON)
+	int	return_op;
+
+	if (!state || !state->a)
+		return ;
+	return_op = do_rev_rotate(state->a);
+	if (return_op == 1 && state->print_mode == PRINT_ON)
 		write(1, "rra\n", 4);
-	if (state->bench)
+	if (return_op == 1 && state->bench)
 	{
 		state->bench->count_op[RRA]++;
 		state->bench->count_op[TOTAL]++;
@@ -43,10 +48,14 @@ void	rra(t_state *state)
 
 void	rrb(t_state *state)
 {
-	do_rev_rotate(state->b);if (state->bench)
-	if (state->print_mode == PRINT_ON)
+	int	return_op;
+
+	if (!state || !state->b)
+		return ;
+	return_op = do_rev_rotate(state->b);
+	if (return_op == 1 && state->print_mode == PRINT_ON)
 		write(1, "rrb\n", 4);
-	if (state->bench)
+	if (return_op == 1 && state->bench)
 	{
 		state->bench->count_op[RRB]++;
 		state->bench->count_op[TOTAL]++;
@@ -55,11 +64,16 @@ void	rrb(t_state *state)
 
 void	rrr(t_state *state)
 {
-	do_rev_rotate(state->a);
-	do_rev_rotate(state->b);
-	if (state->print_mode == PRINT_ON)
+	int	return_op1;
+	int	return_op2;
+
+	if (!state || !state->a || !state->b)
+		return ;
+	return_op1 = do_rev_rotate(state->a);
+	return_op2 = do_rev_rotate(state->b);
+	if ((return_op1 == 1 || return_op2 == 1) && state->print_mode == PRINT_ON)
 		write(1, "rrr\n", 4);
-	if (state->bench)
+	if ((return_op1 == 1 || return_op2 == 1) && state->bench)
 	{
 		state->bench->count_op[RRR]++;
 		state->bench->count_op[TOTAL]++;

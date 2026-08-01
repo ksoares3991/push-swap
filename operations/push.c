@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   push.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kasoares <kasoares@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/23 17:17:58 by kasoares          #+#    #+#             */
-/*   Updated: 2026/07/29 18:52:32 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/01 18:19:17 by kasoares         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	do_push(t_stack *src, t_stack *dst)
+static int	do_push(t_stack *src, t_stack *dst)
 {
 	t_node	*node_to_move;
 
 	if (!src || src->size == 0)
-		return ;
+		return (0);
 	node_to_move = src->head;
 	src->head = src->head->next;
 	if (src->head)
@@ -33,32 +33,37 @@ void	do_push(t_stack *src, t_stack *dst)
 		dst->tail = node_to_move;
 	dst->head = node_to_move;
 	dst->size++;
+	return (1);
 }
 
 void	pa(t_state *state)
 {
-	if (!state->b || state->b->size == 0)
+	int	return_op;
+
+	if (!state || !state->a || !state->b || state->b->size == 0)
 		return ;
-	do_push(state->b, state->a);
-	if (state->print_mode == PRINT_ON)
+	return_op = do_push(state->b, state->a);
+	if (return_op == 1 && state->print_mode == PRINT_ON)
 		write(1, "pa\n", 3);
-	if (state->bench)
+	if (return_op == 1 && state->bench)
 	{
-    	state->bench->count_op[PA]++;
-    	state->bench->count_op[TOTAL]++;
+		state->bench->count_op[PA]++;
+		state->bench->count_op[TOTAL]++;
 	}
 }
 
 void	pb(t_state *state)
 {
-	if (!state->a || state->a->size == 0)
+	int	return_op;
+
+	if (!state || !state->a || !state->b || state->a->size == 0)
 		return ;
-	do_push(state->a, state->b);
-	if (state->print_mode == PRINT_ON)
+	return_op = do_push(state->a, state->b);
+	if (return_op == 1 && state->print_mode == PRINT_ON)
 		write(1, "pb\n", 3);
-	if (state->bench)
+	if (return_op == 1 && state->bench)
 	{
-    	state->bench->count_op[PB]++;
-    	state->bench->count_op[TOTAL]++;
+		state->bench->count_op[PB]++;
+		state->bench->count_op[TOTAL]++;
 	}
 }
