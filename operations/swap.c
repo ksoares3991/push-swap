@@ -6,76 +6,79 @@
 /*   By: kasoares <kasoares@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/23 15:58:30 by kasoares          #+#    #+#             */
-/*   Updated: 2026/08/01 18:22:21 by kasoares         ###   ########.fr       */
+/*   Updated: 2026/08/01 19:32:44 by kasoares         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static int	do_rev_rotate(t_stack *stack)
+static int	do_swap(t_stack *stack)
 {
 	t_node	*first;
-	t_node	*last;
+	t_node	*second;
 
 	if (!stack || stack->size < 2)
 		return (0);
 	first = stack->head;
-	last = stack->tail;
-	stack->tail = last->prev;
-	stack->tail->next = NULL;
-	last->next = first;
-	last->prev = NULL;
-	first->prev = last;
-	stack->head = last;
+	second = first->next;
+	first->next = second->next;
+	if (second->next)
+		second->next->prev = first;
+	else
+		stack->tail = first;
+	second->prev = NULL;
+	second->next = first;
+	first->prev = second;
+	stack->head = second;
 	return (1);
 }
 
-void	rra(t_state *state)
+void	sa(t_state *state)
 {
 	int	return_op;
 
 	if (!state || !state->a)
 		return ;
-	return_op = do_rev_rotate(state->a);
+	return_op = do_swap(state->a);
 	if (return_op == 1 && state->print_mode == PRINT_ON)
-		write(1, "rra\n", 4);
+		write(1, "sa\n", 3);
 	if (return_op == 1 && state->bench)
 	{
-		state->bench->count_op[RRA]++;
+		state->bench->count_op[SA]++;
 		state->bench->count_op[TOTAL]++;
 	}
 }
 
-void	rrb(t_state *state)
+void	sb(t_state *state)
 {
 	int	return_op;
 
 	if (!state || !state->b)
 		return ;
-	return_op = do_rev_rotate(state->b);
+	return_op = do_swap(state->b);
 	if (return_op == 1 && state->print_mode == PRINT_ON)
-		write(1, "rrb\n", 4);
+		write(1, "sb\n", 3);
 	if (return_op == 1 && state->bench)
 	{
-		state->bench->count_op[RRB]++;
+		state->bench->count_op[SB]++;
 		state->bench->count_op[TOTAL]++;
 	}
 }
 
-void	rrr(t_state *state)
+void	ss(t_state *state)
 {
 	int	return_op1;
 	int	return_op2;
 
 	if (!state || !state->a || !state->b)
 		return ;
-	return_op1 = do_rev_rotate(state->a);
-	return_op2 = do_rev_rotate(state->b);
+	return_op1 = do_swap(state->a);
+	return_op2 = do_swap(state->b);
 	if ((return_op1 == 1 || return_op2 == 1) && state->print_mode == PRINT_ON)
-		write(1, "rrr\n", 4);
+		write(1, "ss\n", 3);
 	if ((return_op1 == 1 || return_op2 == 1) && state->bench)
 	{
-		state->bench->count_op[RRR]++;
+		state->bench->count_op[SS]++;
 		state->bench->count_op[TOTAL]++;
 	}
 }
