@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   selection_sort.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kasoares <kasoares@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 14:26:06 by kasoares          #+#    #+#             */
-/*   Updated: 2026/07/29 18:41:52 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/01 20:44:03 by kasoares         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	get_node_index(t_stack *stack, t_node *node)
 	t_node	*current;
 	int		i;
 
-	if (!stack || ! node)
+	if (!stack || !node)
 		return (-1);
 	i = 0;
 	current = stack->head;
@@ -29,7 +29,7 @@ static int	get_node_index(t_stack *stack, t_node *node)
 	return (i);
 }
 
-t_node	*find_smallest(t_stack *stack)
+static t_node	*find_smallest(t_stack *stack)
 {
 	t_node	*smallest;
 	t_node	*current;
@@ -47,50 +47,27 @@ t_node	*find_smallest(t_stack *stack)
 	return (smallest);
 }
 
-void	order_two(t_state *state)
+static void	push_smallest_to_b(t_state *state)
 {
-	int	first;
-	int	second;
+	int		position;
+	t_node	*smallest;
 
-	if (!state || !state->a || state->a->size != 2)
-		return ;
-	first = state->a->head->number;
-	second = state->a->head->next->number;
-	if (first > second)
-		sa(state);
+	smallest = find_smallest(state->a);
+	position = get_node_index(state->a, smallest);
+	while (state->a->head != smallest)
+	{
+		if (position <= (state->a->size / 2))
+			ra(state);
+		else
+			rra(state);
+	}
+	pb(state);
 }
 
-void	order_three(t_state *state)
+void	selection_sort(t_state *state)
 {
-	int	first;
-	int	second;
-	int	third;
-
-	if (!state || !state->a || state->a->size != 3)
+	if (is_sorted(state->a) == 1)
 		return ;
-	first = state->a->head->number;
-	second = state->a->head->next->number;
-	third = state->a->tail->number;
-	if (first > second && first < third)
-		sa(state);
-	else if (first > second && second > third)
-	{
-		sa(state);
-		rra(state);
-	}
-	else if (first > second && first > third && second < third)
-		ra(state);
-	else if (first < second && first < third && second > third)
-	{
-		sa(state);
-		ra(state);
-	}
-	else if (first < second && first > third)
-		rra(state);
-}
-
-void	selection_sort(t_state *state, int position, t_node *smallest)
-{
 	if (state->a->size == 2)
 		order_two(state);
 	else if (state->a->size == 3)
@@ -98,18 +75,7 @@ void	selection_sort(t_state *state, int position, t_node *smallest)
 	else if (state->a->size > 3)
 	{
 		while (state->a->size > 3)
-		{
-			smallest = find_smallest(state->a);
-			position = get_node_index(state->a, smallest);
-			while (state->a->head != smallest)
-			{
-				if (position <= (state->a->size / 2))
-					ra(state);
-				else
-					rra(state);
-			}
-			pb(state);
-		}
+			push_smallest_to_b(state);
 		order_three(state);
 		while (state->b->size > 0)
 			pa(state);
