@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kasoares <kasoares@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/20 15:56:33 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/07/30 18:21:35 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/01 18:26:08 by kasoares         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,29 +33,6 @@ typedef struct s_stack
 	t_node	*tail;
 	int		size;
 }	t_stack;
-
-// typedef struct benchmark
-// {
-// 	t_opcount count_op[12];
-// }	t_bench;
-
-// typedef enum s_opcount
-// {
-// 	SA,
-// 	SB,
-// 	SS,
-// 	RA,
-// 	RB,
-// 	RR,
-// 	RRA,
-// 	RRB,
-// 	RRR,
-// 	PA,
-// 	PB,
-// 	TOTAL
-
-// } t_opcount;
-
 typedef enum e_op
 {
 	SA,
@@ -112,10 +89,10 @@ long	ft_atol(char *s);
 int		ft_isdigit(int c);
 int		ft_isnumber(char *s);
 int		ft_strcmp(const char *s1, char *s2);
-int 	is_int(long n);
+int		is_int(long n);
 void	print_error();
 int 	search_flag(char *av);
-int	parse_and_stack(int ac, char **av, t_stack *a, t_state *config);
+int		parse_and_stack(int ac, char **av, t_stack *a, t_state *config);
 t_stack	*init_stack(void);
 t_state	*init_config(void);
 void 	print_error_debug(t_state *state); // apagar essa joça antes de submeter projeto

@@ -3,75 +3,79 @@
 /*                                                        :::      ::::::::   */
 /*   rotate.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kasoares <kasoares@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/23 17:18:06 by kasoares          #+#    #+#             */
-/*   Updated: 2026/07/29 18:49:55 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/01 18:21:35 by kasoares         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	do_rotate(t_stack *stack)
+static int	do_rev_rotate(t_stack *stack)
 {
 	t_node	*first;
 	t_node	*last;
 
-	// Garante que a pilha e o tail existem e têm pelo menos 2 elementos
-	if (!stack || !stack->head || !stack->head->next || !stack->tail || stack->size < 2)
-		return ;
+	if (!stack || stack->size < 2)
+		return (0);
 	first = stack->head;
 	last = stack->tail;
-	stack->head = first->next;
-	stack->head->prev = NULL;
+	stack->tail = last->prev;
+	stack->tail->next = NULL;
 	last->next = first;
+	last->prev = NULL;
 	first->prev = last;
-	first->next = NULL;
-	stack->tail = first;
+	stack->head = last;
+	return (1);
 }
 
-void	ra(t_state *state)
+void	rra(t_state *state)
 {
+	int	return_op;
+
 	if (!state || !state->a)
 		return ;
-	do_rotate(state->a);
-	if (state->print_mode == PRINT_ON)
-		write(1, "ra\n", 3);
-	// Proteção contra bench == NULL
-	if (state->bench)
+	return_op = do_rev_rotate(state->a);
+	if (return_op == 1 && state->print_mode == PRINT_ON)
+		write(1, "rra\n", 4);
+	if (return_op == 1 && state->bench)
 	{
-		state->bench->count_op[RA]++;
+		state->bench->count_op[RRA]++;
 		state->bench->count_op[TOTAL]++;
 	}
 }
 
-void	rb(t_state *state)
+void	rrb(t_state *state)
 {
+	int	return_op;
+
 	if (!state || !state->b)
 		return ;
-	do_rotate(state->b);
-	if (state->print_mode == PRINT_ON)
-		write(1, "rb\n", 3);
-	// Proteção contra bench == NULL
-	if (state->bench)
+	return_op = do_rev_rotate(state->b);
+	if (return_op == 1 && state->print_mode == PRINT_ON)
+		write(1, "rrb\n", 4);
+	if (return_op == 1 && state->bench)
 	{
-		state->bench->count_op[RB]++;
+		state->bench->count_op[RRB]++;
 		state->bench->count_op[TOTAL]++;
 	}
 }
 
-void	rr(t_state *state)
+void	rrr(t_state *state)
 {
+	int	return_op1;
+	int	return_op2;
+
 	if (!state || !state->a || !state->b)
 		return ;
-	do_rotate(state->a);
-	do_rotate(state->b);
-	if (state->print_mode == PRINT_ON)
-		write(1, "rr\n", 3);
-	// Proteção contra bench == NULL
-	if (state->bench)
+	return_op1 = do_rev_rotate(state->a);
+	return_op2 = do_rev_rotate(state->b);
+	if ((return_op1 == 1 || return_op2 == 1) && state->print_mode == PRINT_ON)
+		write(1, "rrr\n", 4);
+	if ((return_op1 == 1 || return_op2 == 1) && state->bench)
 	{
-		state->bench->count_op[RR]++;
+		state->bench->count_op[RRR]++;
 		state->bench->count_op[TOTAL]++;
 	}
 }
