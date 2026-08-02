@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 16:36:17 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/07/30 18:19:49 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/02 13:11:07 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,11 @@ float	get_disorder(t_stack *a)
 	float	mistakes;
 	float	total_pairs;
 
-	total_pairs = (a->size * (a->size - 1) / 2);
-	mistakes = 0;
-	i = a->head;
 	if (a->size <= 1)
 		return (0.0);
+	total_pairs = (float)(a->size * (a->size - 1) / 2);
+	mistakes = 0;
+	i = a->head;
 	while (i)
 	{
 		j = i->next;
@@ -70,35 +70,35 @@ float	get_disorder(t_stack *a)
 
 void	adaptive_select(t_state *config, t_stack *a)
 {
-	int	final_disorder;
+	float	disorder;
 
-	final_disorder = (get_disorder(a) * 10000);
-	if (config->bench_mode)
-		ft_printf("[bench] disorder: %d,%d%%\n", (final_disorder / 100),
-			(final_disorder % 100));
-	if ((!config->strategy && get_disorder(a) < 0.2)
-		|| config->strategy == 1)
-		selection_sort(config, 0, NULL);
-	if ((!config->strategy && get_disorder(a) >= 0.2
-			&& get_disorder(a) < 0.5) || config->strategy == 2)
-		printf("MEDIUM PLACEHOLDER");
-	if ((!config->strategy && get_disorder(a) >= 0.5
-			&& get_disorder(a) < 1) || config->strategy == 3)
-		printf("COMPLEX PLACEHOLDER");
+	disorder = get_disorder(a);
+	if ((!config->strategy && disorder < 0.2) || config->strategy == 1)
+		selection_sort(config);
+	else if ((!config->strategy && disorder >= 0.2 && disorder < 0.5)
+		|| config->strategy == 2)
+		ft_printf("MEDIUM PLACEHOLDER\n");
+	else if ((!config->strategy && disorder >= 0.5) || config->strategy == 3)
+		ft_printf("COMPLEX PLACEHOLDER\n");
 }
 
 void	select_algorithm(t_state *config, t_stack *a)
 {
+	float	initial_disorder;
+
+	initial_disorder = get_disorder(a);
 	if (config->bench_mode)
 		config->print_mode++;
 	if (!config->strategy || config->strategy == 4)
 		adaptive_select(config, a);
 	else if (config->strategy == 1)
-		selection_sort(config, 0, NULL);
-	if (config->strategy == 2)
-		printf("MEDIUM PLACEHOLDER");
-	if (config->strategy == 3)
-		printf("COMPLEX PLACEHOLDER");
+		selection_sort(config);
+	else if (config->strategy == 2)
+		ft_printf("MEDIUM PLACEHOLDER\n");
+	else if (config->strategy == 3)
+		ft_printf("COMPLEX PLACEHOLDER\n");
+	if (config->bench_mode)
+		print_bench(config, initial_disorder);
 }
 
 int	main(int ac, char **av)
@@ -107,6 +107,8 @@ int	main(int ac, char **av)
 	t_stack	*b;
 	t_state	*config;
 
+	if (ac < 2)
+		return (0);
 	a = init_stack();
 	b = init_stack();
 	config = init_config();
@@ -114,6 +116,8 @@ int	main(int ac, char **av)
 	config->b = b;
 	parse_and_stack(ac, av, a, config);
 	select_algorithm(config, a);
-	free(a);
+	free_stack(a);
+	free_stack(b);
+	free(config);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   selection_sort.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kasoares <kasoares@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/24 14:26:06 by kasoares          #+#    #+#             */
-/*   Updated: 2026/08/01 20:44:03 by kasoares         ###   ########.fr       */
+/*   Updated: 2026/08/02 12:49:58 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static void	push_smallest_to_b(t_state *state)
 	pb(state);
 }
 
-void	selection_sort(t_state *state)
+void    selection_sort(t_state *state)
 {
 	if (is_sorted(state->a) == 1)
 		return ;
