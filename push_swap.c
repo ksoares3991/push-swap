@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 16:36:17 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/08/02 13:11:07 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/02 18:22:23 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,18 +68,30 @@ float	get_disorder(t_stack *a)
 	return (mistakes / total_pairs);
 }
 
-void	adaptive_select(t_state *config, t_stack *a)
+void    adaptive_select(t_state *config, t_stack *a)
 {
-	float	disorder;
+    float   disorder;
 
-	disorder = get_disorder(a);
-	if ((!config->strategy && disorder < 0.2) || config->strategy == 1)
-		selection_sort(config);
-	else if ((!config->strategy && disorder >= 0.2 && disorder < 0.5)
-		|| config->strategy == 2)
-		ft_printf("MEDIUM PLACEHOLDER\n");
-	else if ((!config->strategy && disorder >= 0.5) || config->strategy == 3)
-		ft_printf("COMPLEX PLACEHOLDER\n");
+    if (!a || a->size <= 1 || is_sorted(a))
+        return ;
+    if (a->size == 2)
+    {
+        order_two(config);
+        return ;
+    }
+    if (a->size == 3)
+    {
+        order_three(config);
+        return ;
+    }
+    disorder = get_disorder(a);
+    if ((!config->strategy && disorder < 0.2) || config->strategy == 1)
+        selection_sort(config);
+    else if ((!config->strategy && disorder >= 0.2 && disorder < 0.5)
+        || config->strategy == 2)
+        ft_printf("MEDIUM PLACEHOLDER\n");
+    else if ((!config->strategy && disorder >= 0.5) || config->strategy == 3)
+        ft_printf("COMPLEX PLACEHOLDER\n");
 }
 
 void	select_algorithm(t_state *config, t_stack *a)
