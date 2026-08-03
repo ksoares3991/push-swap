@@ -6,89 +6,81 @@
 /*   By: kasoares <kasoares@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/30 15:58:44 by kasoares          #+#    #+#             */
-/*   Updated: 2026/07/30 20:01:17 by kasoares         ###   ########.fr       */
+/*   Updated: 2026/08/03 00:17:26 by kasoares         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static int	*sort_temp_array(int *arr, int size)
+static int	partition_chunk(t_state *state, int pivot, int size)
 {
-	int	temp;
-	int	i;
-	int	j;
+	int	stays_count;
 
-	i = 0;
-	while (i < size)
+	stays_count = 0;
+	while (size > 0)
 	{
-		j = i + 1;
-		while (j < size)
+		if (state->a->head->index <= pivot)
+			pb(state);
+		else
 		{
-			if (arr[j] < arr[i])
-			{
-				temp = arr[i];
-				arr[i] = arr[j];
-				arr[j] = temp;
-			}
-			j++;
+			ra(state);
+			stays_count++;
 		}
-		i++;
+		size--;
 	}
-	return (arr);
+	return (stays_count);
 }
 
-int	get_pivot(t_state *state)
+static void	restore_stays(t_state *state, int stays_count)
 {
-	t_node	*current_node;
-	int		*lst_copy;
-	int		lst_size;
-	int		pivot;
-	int		i;
-
-	current_node = state->a->head;
-	lst_size = state->a->size;
-	lst_copy = malloc(sizeof(int) * lst_size);
-	if (!lst_copy)
-		return (0); // or print_error(state); // or exit_error - check naming convention with victor
-	i = 0;
-	while (current_node != NULL)
+	while (stays_count > 0)
 	{
-		lst_copy[i] = current_node->number;
-		current_node = current_node->next;
-		i++;
+		rra(state);
+		stays_count--;
 	}
-	pivot = sort_temp_array(lst_copy, lst_size)[lst_size / 2];
-	free(lst_copy);
-	return (pivot);
+}
+
+static void	restore_goes(t_state *state, int goes_count)
+{
+	while (goes_count > 0)
+	{
+		pa(state);
+		goes_count--;
+	}
+}
+
+void	order_chunk(t_state *state, int low, int high)
+{
+	int	size;
+	int	pivot;
+	int	stays_count;
+	int	goes_count;
+	int	rest_empty;
+
+	size = high - low + 1;
+	if (size <= 1)
+		return ;
+	if (size == 2)
+	{
+		if (state->a->head->index > state->a->head->next->index)
+			sa(state);
+		return ;
+	}
+	pivot = (low + high) / 2;
+	rest_empty = (state->a->size == size);
+	stays_count = partition_chunk(state, pivot, size);
+	goes_count = size - stays_count;
+	if (!rest_empty)
+		restore_stays(state, stays_count);
+	order_chunk(state, pivot+1,high);
+	restore_goes(state, goes_count);
+	order_chunk(state, low, pivot);
 }
 
 void	quick_sort(t_state *state)
 {
-	int	items_checked;
-	int	chunk_size;
-	int	rotated;
-	int	pushed;
-	int	pivot;
-
-	if (chunk_size <= 3)
-		order_three(state);
-	else
-	{
-		pivot = get_pivot(state, chunk_size);
-		pushed = 0;
-		rotated = 0;
-		items_checked = 0;
-		if (items_checked < chunk_size)
-		{
-
-		}
-		if (partition ended?)
-		{
-
-		}
-		else
-			rra(state) *rotated;
-	}
+	normalize_ranks(state);
+	order_chunk(state, 0, state->total_elements - 1);
 }
 
 
