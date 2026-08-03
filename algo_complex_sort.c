@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/30 15:58:44 by kasoares          #+#    #+#             */
-/*   Updated: 2026/08/03 14:41:40 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/03 16:16:45 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ void	order_chunk(t_state *state, int low, int high)
 	goes_count = size - stays_count;
 	if (!rest_empty)
 		restore_stays(state, stays_count);
-	order_chunk(state, pivot+1,high);
-	restore_goes(state, goes_count);
-	order_chunk(state, low, pivot);
+	order_chunk (state, pivot + 1, high);
+	restore_goes (state, goes_count);
+	order_chunk (state, low, pivot);
 }
 
 void	quick_sort(t_state *state)

@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/30 15:03:20 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/08/03 15:45:33 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/03 18:59:41 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	add_to_stack(char *p_str, t_stack *a, t_state *config, char **f_str)
 		a->tail = new_node;
 	}
 	a->size++;
-	
 }
 
 int	add_and_search(char *str, t_stack *a, t_state *config, char **f_str)
@@ -58,7 +57,7 @@ int	add_and_search(char *str, t_stack *a, t_state *config, char **f_str)
 		add_to_stack(str, a, config, f_str);
 		return (1);
 	}
-	if (search_flag(str) && search_flag(str) < 5)
+	if ((search_flag(str) && search_flag(str) < 5))
 	{
 		if (f_str[1] != NULL)
 			print_error(a, config, f_str);
