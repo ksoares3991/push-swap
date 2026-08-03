@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kasoares <kasoares@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/30 15:03:20 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/08/02 13:06:35 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/03 00:22:04 by kasoares         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	add_to_stack(char *p_str, t_stack *a, t_state *config, char **f_str)
 		a->tail = new_node;
 	}
 	a->size++;
+	a->total_elements++;
 }
 
 int	add_and_search(char *str, t_stack *a, t_state *config, char **f_str)

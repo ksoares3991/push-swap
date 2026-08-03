@@ -6,7 +6,7 @@
 /*   By: kasoares <kasoares@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/01 20:06:12 by kasoares          #+#    #+#             */
-/*   Updated: 2026/08/01 20:20:30 by kasoares         ###   ########.fr       */
+/*   Updated: 2026/08/02 18:45:27 by kasoares         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,25 @@ void	order_three(t_state *state)
 	}
 	else if (first < second && first > third)
 		rra(state);
+}
+void	rank_normalization(t_state *state)
+{
+	t_node	*outer;
+	t_node	*inner;
+	int		rank;
+
+	outer = state->a->head;
+	while (outer != NULL)
+	{
+		rank = 0;
+		inner = state->a->head;
+		while (inner != NULL)
+		{
+			if (inner->number < outer->number)
+				rank++;
+			inner = inner->next;
+		}
+		outer->index = rank;
+		outer = outer->next;
+	}
 }
