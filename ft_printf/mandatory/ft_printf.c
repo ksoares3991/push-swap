@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/15 13:03:18 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/06/26 14:05:49 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/02 23:28:57 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	ft_dispatch_table(char specifier, va_list *args)
 		handlers['i'] = print_nbr_signed;
 		handlers['d'] = print_nbr_signed;
 		init = 1;
-	}	
+	}
 	if (handlers[(unsigned char)specifier])
 		return (handlers[(unsigned char)specifier](args));
 	return (0);

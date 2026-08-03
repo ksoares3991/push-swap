@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kasoares <kasoares@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/30 15:03:20 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/08/03 00:22:04 by kasoares         ###   ########.fr       */
+/*   Updated: 2026/08/03 14:36:23 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	add_to_stack(char *p_str, t_stack *a, t_state *config, char **f_str)
 		a->tail = new_node;
 	}
 	a->size++;
-	a->total_elements++;
+	
 }
 
 int	add_and_search(char *str, t_stack *a, t_state *config, char **f_str)
@@ -60,12 +60,16 @@ int	add_and_search(char *str, t_stack *a, t_state *config, char **f_str)
 	}
 	if (search_flag(str) && search_flag(str) < 5)
 	{
+		if (f_str[1] != NULL)
+			print_error(a, config, f_str);
 		config->total_flags++;
 		config->strategy = search_flag(str);
 		return (1);
 	}
 	if (search_flag(str) && search_flag(str) == 5)
 	{
+		if (f_str[1] != NULL)
+			print_error(a, config, f_str);
 		config->bench_mode++;
 		return (1);
 	}
@@ -98,4 +102,19 @@ int	parse_and_stack(int ac, char **av, t_stack *a, t_state *config)
 			print_error(a, config, NULL);
 	}
 	return (1);
+}
+
+void	free_parsed_str(char **f_str)
+{
+	int	i;
+
+	i = 0;
+	if (!f_str)
+		return ;
+	while (f_str[i])
+	{
+		free(f_str[i]);
+		i++;
+	}
+	free(f_str);
 }

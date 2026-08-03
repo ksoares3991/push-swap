@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quick_sort.c                                       :+:      :+:    :+:   */
+/*   algo_complex_sort.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kasoares <kasoares@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/30 15:58:44 by kasoares          #+#    #+#             */
-/*   Updated: 2026/08/03 00:17:26 by kasoares         ###   ########.fr       */
+/*   Updated: 2026/08/03 14:41:40 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,3 @@ void	quick_sort(t_state *state)
 	normalize_ranks(state);
 	order_chunk(state, 0, state->total_elements - 1);
 }
-
-

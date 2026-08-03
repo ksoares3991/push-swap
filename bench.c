@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/01 03:08:56 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/08/02 13:12:02 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/02 19:50:01 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	print_bench_ops(t_state *config, int total)
 	ft_putstr_fd("\n", 2);
 }
 
-static void	print_bench_strategy(int strategy, float disorder)
+static void	print_bench_strategy(int strategy, float disorder, t_state *config)
 {
 	ft_putstr_fd("[bench] strategy: ", 2);
 	if (strategy == 1)
@@ -46,7 +46,9 @@ static void	print_bench_strategy(int strategy, float disorder)
 		ft_putstr_fd("Complex / O(n log n)\n", 2);
 	else
 	{
-		if (disorder < 0.2)
+		if (config->a->size <= 5)
+			ft_putstr_fd("Adaptive / O(n^2)\n", 2);
+		else if (disorder < 0.2)
 			ft_putstr_fd("Adaptive / O(n^2)\n", 2);
 		else if (disorder >= 0.2 && disorder < 0.5)
 			ft_putstr_fd("Adaptive / O(n\xe2\x88\x9an)\n", 2);
@@ -71,7 +73,7 @@ void	print_bench(t_state *config, float disorder)
 		ft_putstr_fd("0", 2);
 	ft_putnbr_fd(d_int % 100, 2);
 	ft_putstr_fd("%\n", 2);
-	print_bench_strategy(config->strategy, disorder);
+	print_bench_strategy(config->strategy, disorder, config);
 	i = 0;
 	total = 0;
 	while (i < TOTAL)

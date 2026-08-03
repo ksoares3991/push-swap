@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_utils.c                                       :+:      :+:    :+:   */
+/*   algo_sort_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kasoares <kasoares@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/01 20:06:12 by kasoares          #+#    #+#             */
-/*   Updated: 2026/08/02 18:45:27 by kasoares         ###   ########.fr       */
+/*   Updated: 2026/08/03 14:48:59 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ void	order_three(t_state *state)
 	else if (first < second && first > third)
 		rra(state);
 }
-void	rank_normalization(t_state *state)
+
+void	normalize_ranks(t_state *state)
 {
 	t_node	*outer;
 	t_node	*inner;

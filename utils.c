@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 16:36:14 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/08/02 13:06:35 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/02 23:28:57 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	print_error(t_stack *a, t_state *config, char **f_str)
 	}
 	if (f_str)
 		free_parsed_str(f_str);
-	ft_putstr_fd("Error\n", 2);
+	ft_putstr_fd("Error TESTANDO\n", 2);
 	exit(1);
 }
 
@@ -83,35 +83,6 @@ long	ft_atol(char *s)
 	if (is_negative)
 		return (-result);
 	return (result);
-}
-
-int	ft_strcmp(const char *s1, char *s2)
-{
-	int	i;
-
-	i = 0;
-	while (s1[i] || s2[i])
-	{
-		if (s1[i] != s2[i])
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-void	free_parsed_str(char **f_str)
-{
-	int	i;
-
-	i = 0;
-	if (!f_str)
-		return ;
-	while (f_str[i])
-	{
-		free(f_str[i]);
-		i++;
-	}
-	free(f_str);
 }
 
 void	free_stack(t_stack *stack)

@@ -6,41 +6,11 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 16:36:17 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/08/02 13:11:07 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/03 14:43:41 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
-char	**get_flags(void)
-{
-	static char	*flags[6] = {
-		"",
-		"--simple",
-		"--medium",
-		"--complex",
-		"--adaptive",
-		"--bench"
-	};
-
-	return ((char **)flags);
-}
-
-int	search_flag(char *av)
-{
-	int	i;
-
-	i = 0;
-	if (!av)
-		return (0);
-	while (i < 6)
-	{
-		if (ft_strcmp((get_flags()[i]), av))
-			return (i);
-		i++;
-	}
-	return (0);
-}
 
 float	get_disorder(t_stack *a)
 {
@@ -68,18 +38,29 @@ float	get_disorder(t_stack *a)
 	return (mistakes / total_pairs);
 }
 
-void	adaptive_select(t_state *config, t_stack *a)
+static void	adaptive_select(t_state *config, t_stack *a, float disorder)
 {
-	float	disorder;
-
-	disorder = get_disorder(a);
-	if ((!config->strategy && disorder < 0.2) || config->strategy == 1)
+	if (!a || a->size <= 1 || is_sorted(a))
+		return ;
+	if (a->size == 2)
+	{
+		order_two(config);
+		return ;
+	}
+	if (a->size == 3)
+	{
+		order_three(config);
+		return ;
+	}
+	if (a->size == 5)
+		selection_sort(config);
+	else if ((!config->strategy && disorder < 0.2) || config->strategy == 1)
 		selection_sort(config);
 	else if ((!config->strategy && disorder >= 0.2 && disorder < 0.5)
 		|| config->strategy == 2)
-		ft_printf("MEDIUM PLACEHOLDER\n");
+		medium_sort(config);
 	else if ((!config->strategy && disorder >= 0.5) || config->strategy == 3)
-		ft_printf("COMPLEX PLACEHOLDER\n");
+		quick_sort(config);
 }
 
 void	select_algorithm(t_state *config, t_stack *a)
@@ -90,13 +71,13 @@ void	select_algorithm(t_state *config, t_stack *a)
 	if (config->bench_mode)
 		config->print_mode++;
 	if (!config->strategy || config->strategy == 4)
-		adaptive_select(config, a);
+		adaptive_select(config, a, initial_disorder);
 	else if (config->strategy == 1)
 		selection_sort(config);
 	else if (config->strategy == 2)
-		ft_printf("MEDIUM PLACEHOLDER\n");
+		medium_sort(config);
 	else if (config->strategy == 3)
-		ft_printf("COMPLEX PLACEHOLDER\n");
+		quick_sort(config);
 	if (config->bench_mode)
 		print_bench(config, initial_disorder);
 }
