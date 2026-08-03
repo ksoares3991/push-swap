@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/30 15:03:20 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/08/03 14:36:23 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/03 15:45:33 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ int	parse_and_stack(int ac, char **av, t_stack *a, t_state *config)
 		if ((config->bench_mode > 1) || config->total_flags > 1)
 			print_error(a, config, NULL);
 	}
+	config->total_elements = a->size;
 	return (1);
 }
 
