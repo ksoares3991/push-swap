@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 16:36:17 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/08/02 23:28:57 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/03 14:43:41 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ static void	adaptive_select(t_state *config, t_stack *a, float disorder)
 		selection_sort(config);
 	else if ((!config->strategy && disorder >= 0.2 && disorder < 0.5)
 		|| config->strategy == 2)
-		ft_printf("MEDIUM PLACEHOLDER\n");
+		medium_sort(config);
 	else if ((!config->strategy && disorder >= 0.5) || config->strategy == 3)
-		ft_printf("COMPLEX PLACEHOLDER ADAPTATIVO\n");
+		quick_sort(config);
 }
 
 void	select_algorithm(t_state *config, t_stack *a)
@@ -77,7 +77,7 @@ void	select_algorithm(t_state *config, t_stack *a)
 	else if (config->strategy == 2)
 		medium_sort(config);
 	else if (config->strategy == 3)
-		ft_printf("COMPLEX PLACEHOLDER SELECT ALGO\n");
+		quick_sort(config);
 	if (config->bench_mode)
 		print_bench(config, initial_disorder);
 }

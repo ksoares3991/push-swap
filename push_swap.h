@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/20 15:56:33 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/08/02 23:28:57 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/03 14:49:18 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ typedef struct s_node
 	struct s_node	*next;
 	struct s_node	*prev;
 	int				number;
+	int				index;
 }	t_node;
 
 typedef struct s_stack
@@ -93,9 +94,11 @@ t_stack	*init_stack(void);
 t_state	*init_config(void);
 
 void	selection_sort(t_state *state);
+void	quick_sort(t_state *state);
 int		ft_sqrt(int nb);
 int		*get_sorted_array(t_stack *a);
 int		get_max_index_in_b(t_stack *stack);
+void	normalize_ranks(t_state *state);
 void	medium_sort(t_state *state);
 
 void	sa(t_state *state);

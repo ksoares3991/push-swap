@@ -6,7 +6,7 @@
 #    By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/07/17 16:04:49 by vicdos-s          #+#    #+#              #
-#    Updated: 2026/08/02 23:48:14 by vicdos-s         ###   ########.fr        #
+#    Updated: 2026/08/03 14:48:01 by vicdos-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ SRCS        = $(SRCS_DIR)/init.c \
               $(SRCS_DIR)/algo_sort_utils.c \
               $(SRCS_DIR)/algo_medium_sort.c \
 			  $(SRCS_DIR)/algo_simple_sort.c \
+			  $(SRCS_DIR)/algo_complex_sort.c\
               $(SRCS_DIR)/algo_medium_sort_utils.c
 OBJS        = $(SRCS:.c=.o)
 
