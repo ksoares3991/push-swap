@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kasoares <kasoares@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/20 15:56:33 by vicdos-s          #+#    #+#             */
 /*   Updated: 2026/08/03 00:16:36 by kasoares         ###   ########.fr       */
@@ -14,7 +14,6 @@
 # define PUSH_SWAP_H
 
 # include <stdlib.h>
-# include <stdio.h> //TO BE REMOVED
 # include "ft_printf.h"
 # include "libft.h"
 
@@ -32,6 +31,7 @@ typedef struct s_stack
 	t_node	*tail;
 	int		size;
 }	t_stack;
+
 typedef enum e_op
 {
 	SA,
@@ -48,18 +48,18 @@ typedef enum e_op
 	TOTAL
 }	t_op;
 
-typedef enum e_print // select to print or to not print bench
+typedef enum e_print
 {
 	PRINT_OFF,
 	PRINT_ON
 }	t_print;
 
-typedef struct s_bench //observe and register performance metrics
+typedef struct s_bench
 {
 	int	count_op[(TOTAL + 1)];
 }	t_bench;
 
-typedef struct s_state // master: define game/environment current state
+typedef struct s_state
 {
 	int		strategy;
 	int		bench_mode;
