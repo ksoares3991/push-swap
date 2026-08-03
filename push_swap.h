@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/20 15:56:33 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/08/02 13:13:47 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/02 23:28:57 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ typedef struct s_state
 char	**get_flags(void);
 int		search_flag(char *av);
 float	get_disorder(t_stack *a);
-void	adaptive_select(t_state *config, t_stack *a);
 void	select_algorithm(t_state *config, t_stack *a);
 
 void	print_error(t_stack *a, t_state *config, char **f_str);
@@ -93,7 +92,11 @@ void	free_stack(t_stack *stack);
 t_stack	*init_stack(void);
 t_state	*init_config(void);
 
-void    selection_sort(t_state *state);
+void	selection_sort(t_state *state);
+int		ft_sqrt(int nb);
+int		*get_sorted_array(t_stack *a);
+int		get_max_index_in_b(t_stack *stack);
+void	medium_sort(t_state *state);
 
 void	sa(t_state *state);
 void	sb(t_state *state);
@@ -107,9 +110,9 @@ void	rrr(t_state *state);
 void	pa(t_state *state);
 void	pb(t_state *state);
 
-int     is_sorted(t_stack *stack);
-void    order_two(t_state *state);
-void    order_three(t_state *state);
+int		is_sorted(t_stack *stack);
+void	order_two(t_state *state);
+void	order_three(t_state *state);
 
 void	print_bench(t_state *config, float disorder);
 #endif

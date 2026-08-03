@@ -6,7 +6,7 @@
 #    By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/07/17 16:04:49 by vicdos-s          #+#    #+#              #
-#    Updated: 2026/08/02 13:12:26 by vicdos-s         ###   ########.fr        #
+#    Updated: 2026/08/02 23:48:14 by vicdos-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,18 +22,21 @@ PRINTF_DIR  = ./ft_printf/
 PRINTF      = $(PRINTF_DIR)/libftprintf.a
 
 SRCS_DIR    = .
-SRCS        = $(SRCS_DIR)/push_swap.c \
+SRCS        = $(SRCS_DIR)/init.c \
+              $(SRCS_DIR)/bench.c \
               $(SRCS_DIR)/utils.c \
-			  $(SRCS_DIR)/init.c \
-			  $(SRCS_DIR)/bench.c \
-			  $(SRCS_DIR)/parser_utils.c\
-              operations/push.c \
-              operations/rev_rotate.c \
-              operations/rotate.c \
-              operations/swap.c \
-              algorithms/selection_sort.c \
-			  algorithms/sort_utils.c \
-
+              $(SRCS_DIR)/op_push.c \
+              $(SRCS_DIR)/op_swap.c \
+              $(SRCS_DIR)/op_rotate.c \
+              $(SRCS_DIR)/push_swap.c \
+              $(SRCS_DIR)/flag_utils.c \
+              $(SRCS_DIR)/parser_utils.c \
+		      $(SRCS_DIR)/op_rev_rotate.c \
+              $(SRCS_DIR)/compare_utils.c \
+              $(SRCS_DIR)/algo_sort_utils.c \
+              $(SRCS_DIR)/algo_medium_sort.c \
+			  $(SRCS_DIR)/algo_simple_sort.c \
+              $(SRCS_DIR)/algo_medium_sort_utils.c
 OBJS        = $(SRCS:.c=.o)
 
 INCLUDES    = -I $(LIBFT_DIR) -I $(PRINTF_DIR) -I $(PRINTF_DIR)mandatory -I $(SRCS_DIR)
@@ -41,7 +44,7 @@ INCLUDES    = -I $(LIBFT_DIR) -I $(PRINTF_DIR) -I $(PRINTF_DIR)mandatory -I $(SR
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(PRINTF) $(OBJS)
-	$(CC) -g $(CFLAGS) $(OBJS) $(LIBFT) $(PRINTF) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(PRINTF) -o $(NAME)
         
 $(LIBFT): FORCE
 	make -C $(LIBFT_DIR)

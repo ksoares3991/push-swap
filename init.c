@@ -6,11 +6,9 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/30 18:19:35 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/08/02 13:19:22 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/02 23:28:57 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "push_swap.h"
 
 #include "push_swap.h"
 
