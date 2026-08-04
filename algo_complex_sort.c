@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/30 15:58:44 by kasoares          #+#    #+#             */
-/*   Updated: 2026/08/03 16:16:45 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/04 17:34:08 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ void	order_chunk(t_state *state, int low, int high)
 
 void	quick_sort(t_state *state)
 {
+	if (is_sorted(state->a) == 1)
+		return ;
 	normalize_ranks(state);
 	order_chunk(state, 0, state->total_elements - 1);
 }

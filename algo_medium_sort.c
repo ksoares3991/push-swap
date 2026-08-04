@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 22:11:53 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/08/04 15:41:24 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/04 17:33:38 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,6 @@ void	medium_sort(t_state *state)
 	if (!state || !state->a || state->a->size <= 1)
 		return ;
 	normalize_ranks(state);
-	if (is_sorted(state->a) == 1)
-		return ;
 	if (state->a->size == 2)
 		order_two(state);
 	else if (state->a->size == 3)

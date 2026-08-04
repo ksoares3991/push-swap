@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 16:36:17 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/08/04 15:43:33 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/04 17:20:50 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ float	get_disorder(t_stack *a)
 
 	if (a->size <= 1)
 		return (0.0);
-	total_pairs = (float)(a->size * (a->size - 1) / 2);
+	total_pairs = (float)((long)(a->size * (a->size - 1) / 2));
 	mistakes = 0;
 	i = a->head;
 	while (i)
@@ -40,8 +40,6 @@ float	get_disorder(t_stack *a)
 
 static	void	adaptive_select(t_state *config, t_stack *a, float disorder)
 {
-	int	is_adaptive;
-
 	if (a->size <= 1 || is_sorted(a))
 		return ;
 	if (a->size == 2)
@@ -50,13 +48,12 @@ static	void	adaptive_select(t_state *config, t_stack *a, float disorder)
 		return (order_three(config));
 	if (a->size <= 5)
 		return (selection_sort(config));
-	is_adaptive = (!config->strategy || config->strategy == 4);
-	if ((is_adaptive && disorder < 0.2) || config->strategy == 1)
+	if ((disorder < 0.2) || config->strategy == 1)
 		selection_sort(config);
-	else if ((is_adaptive && disorder >= 0.2 && disorder < 0.5)
+	else if ((disorder >= 0.2 && disorder < 0.5)
 		|| config->strategy == 2)
 		medium_sort(config);
-	else if ((is_adaptive && disorder >= 0.5) || config->strategy == 3)
+	else if ((disorder >= 0.5) || config->strategy == 3)
 		quick_sort(config);
 }
 
@@ -73,8 +70,8 @@ void	select_algorithm(t_state *config, t_stack *a)
 		medium_sort(config);
 	else if (config->strategy == 3)
 		quick_sort(config);
-	(void)adaptive_select;
-	(void)quick_sort;
+	if (config->total_elements < 1)
+		print_error(a, config, NULL);
 	if (config->bench_mode)
 		print_bench(config, initial_disorder);
 }

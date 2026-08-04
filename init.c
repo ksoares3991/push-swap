@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/30 18:19:35 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/08/02 23:28:57 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/04 17:12:47 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_state	*init_config(void)
 		return (NULL);
 	}
 	i = 0;
-	while (i < TOTAL)
+	while (i <= TOTAL)
 		config->bench->count_op[i++] = 0;
 	config->strategy = 0;
 	config->bench_mode = 0;

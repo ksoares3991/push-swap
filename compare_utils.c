@@ -6,13 +6,13 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 23:40:00 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/08/02 23:28:57 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/04 17:39:38 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	ft_strcmp(const char *s1, char *s2)
+int	match_str(const char *s1, char *s2)
 {
 	int	i;
 

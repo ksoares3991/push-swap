@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 23:45:00 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/08/03 19:00:25 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/04 17:39:38 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	search_flag(char *av)
 		return (0);
 	while (i < 6)
 	{
-		if (ft_strcmp((get_flags()[i]), av))
+		if (match_str((get_flags()[i]), av))
 			return (i);
 		i++;
 	}
