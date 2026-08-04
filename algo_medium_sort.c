@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/02 22:11:53 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/08/03 20:00:27 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/04 13:07:25 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,9 @@ void    medium_sort(t_state *state)
         order_two(state);
     else if (state->a->size == 3)
         order_three(state);
-    else if (state->a->size > 3)
+    else if (state->a->size <= 5)
+        selection_sort(state);        
+    else if (state->a->size > 5)
     {
         k_sort_phase1(state);
         k_sort_phase2(state);
