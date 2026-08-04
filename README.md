@@ -19,6 +19,22 @@ Current supported selectors in this repository are:
 - `--adaptive`
 - `--bench`
 
+## Contributions
+
+| Area | Files | Author |
+| --- | --- | --- |
+| Stack operations (`sa`/`sb`/`ss`, `ra`/`rb`/`rr`, `rra`/`rrb`/`rrr`, `pa`/`pb`) | `op_swap.c`, `op_rotate.c`, `op_rev_rotate.c`, `op_push.c` | kasoares |
+| Simple sort baseline | `algo_simple_sort.c` | kasoares |
+| Parsing, flags, error handling | `parser_utils.c`, `flag_utils.c`, `utils.c`, `compare_utils.c` | vicdos-s |
+| Main dispatch, disorder metric, adaptive routing | `push_swap.c` | vicdos-s |
+| Medium algorithm (K-sort / chunk-based) | `algo_medium_sort.c`, `algo_medium_sort_utils.c` | vicdos-s and kasoares |
+| Complex algorithm (rank-based quicksort variant) | `algo_complex_sort.c` | kasoares
+| Shared utilities, init/free | `init.c`, `algo_sort_utils.c` | vicdos-s |
+| Benchmark subsystem | `bench.c` | vicdos-s |
+| README, testing | — | vicdos-s and kasoares
+
+Both learners reviewed and understand every algorithm in this repository, as required for the defense.
+
 ## Instructions
 
 Build the project with:
@@ -101,18 +117,53 @@ Why this is a reasonable `O(n\sqrt{n})`-style strategy in practice:
 - the stack `b` is organized so that the largest values are recovered efficiently
 - the operation count is much lower on large, mixed inputs
 
-This is the strategy currently used for the random 500-element benchmark in this repository.
-
 ### `--complex`
 
-This selector is reserved for the high-complexity strategy.
+This mode uses `quick_sort`, a rank-based quicksort variant adapted to the
+two-stack model.
 
-Placeholder for the final implementation:
+The algorithm first calls `normalize_ranks`, which assigns every value in `a`
+its rank (0 to n-1) by counting how many other values are smaller. All
+subsequent decisions operate on ranks instead of raw integers, which lets the
+partition logic work with plain index arithmetic instead of caring about the
+actual value range.
 
-- target complexity class: `O(n log n)`
-- internal method: `{{DESCRIBE_IMPLEMENTATION_HERE}}`
-- selection rationale: `{{DESCRIBE_SELECTION_CRITERIA_HERE}}`
-- space argument: `{{DESCRIBE_SPACE_BOUND_HERE}}`
+`order_chunk(state, low, high)` then recurses on rank ranges:
+
+- The pivot is the deterministic midpoint `(low + high) / 2` of the current
+  rank range, not a value drawn from the data. Because ranks form a
+  permutation of `0..n-1`, this midpoint always splits the range into two
+  halves of equal size, regardless of input order.
+- `partition_chunk` walks the top of `a`: values with rank `<= pivot` are
+  pushed to `b` with `pb`; values with rank `> pivot` are rotated to the
+  bottom of `a` with `ra` and counted as "stays".
+- `restore_stays` brings the "stays" group back to the top of `a` with `rra`
+  (skipped when the chunk being partitioned is the whole of `a`, since in
+  that case the rotations already restored the original order).
+- The algorithm recurses on the high half first (still in `a`), then pulls
+  the low half back from `b` with `pa`, then recurses on the low half.
+
+Why this is an `O(n log n)`-class strategy in the Push_swap operation model:
+
+- the deterministic midpoint pivot guarantees an exact 50/50 split at every
+  level, so the recursion has depth `ceil(log2(n))` regardless of input —
+  there is no data-dependent worst case, unlike a classic quicksort with a
+  first/last-element pivot
+- each level partitions every element it touches with a bounded number of
+  operations (one `pb`/`ra` per element, plus the restore passes), so total
+  work per level is `O(chunk size)`
+- summed over `O(log n)` levels, the total operation count is `O(n log n)`
+
+Space argument: the algorithm uses no heap allocation beyond the ranks
+already stored in `t_node`. The only "space" cost in the Push_swap model is
+recursion depth, which is `O(log n)` stack frames — negligible even at
+n = 500.
+
+Selection rationale: a rank-normalized quicksort was chosen over a
+merge-sort-style adaptation because merge sort on two stacks needs an
+auxiliary buffer to interleave runs, and the two available stacks *are* the
+only buffers this model gives you. Partitioning in place onto `b` and back
+avoids needing a third structure.
 
 ### `--adaptive`
 
@@ -122,9 +173,17 @@ Current thresholds in the code:
 
 - disorder below `0.2`: `selection_sort`
 - disorder from `0.2` to below `0.5`: `medium_sort`
-- disorder at or above `0.5`: complex placeholder branch
+- disorder at or above `0.5`: `quick_sort`
 
 This is documented so the runtime decision matches the implementation and can be defended during evaluation.
+
+> **Note on the 0.5 boundary:** a uniformly random permutation has an
+> *expected* disorder of exactly 0.5, since every pair is inverted with
+> probability 1/2. This means a random `shuf`-generated benchmark input will
+> land on either side of the `medium`/`complex` threshold roughly at random.
+> This is a direct consequence of the subject's mandated thresholds
+> (VI.3.3), not an implementation choice — the boundary cannot be moved
+> without violating the disorder-regime requirement.
 
 ## Benchmark
 
@@ -145,9 +204,35 @@ Example output format:
 [bench] ra: ... rb: ... rr: ... rra: ... rrb: ... rrr: ...
 ```
 
+### Measured performance against the subject's targets (VI.6)
+
+Each cell is the worst observed operation count across 10 runs (n=100) or
+5 runs (n=500) of uniformly random input, generated with `shuf`.
+
+| n | strategy | worst ops | target for "pass" | target for "excellent" |
+| --- | --- | ---: | ---: | ---: |
+| 100 | `--adaptive` (default) | 1121 | < 2000 | < 700 |
+| 100 | `--medium` | 606 | < 2000 | < 700 |
+| 100 | `--complex` | 1123 | < 2000 | < 700 |
+| 500 | `--adaptive` (default) | 7641 | < 12000 | < 5500 |
+| 500 | `--medium` | 5168 | < 12000 | < 5500 |
+| 500 | `--complex` | 7635 | < 12000 | < 5500 |
+| 500 | `--simple` | 33440 | *n/a* | *n/a — O(n²) is required by VI.3.3, not optimized for this size* |
+
+Reproduce with:
+
+```sh
+ARG=$(shuf -i 0-9999 -n 500)
+./push_swap $ARG --bench > /dev/null
+```
+
 ### The Real Worst Case for `--simple`
 
-A random input is a practical worst case for the simple strategy because the smallest value is frequently far from the top of stack `a`, which forces repeated rotations before each push.
+A random input is a practical worst case for the simple strategy because the
+smallest value is frequently far from the top of stack `a`, which forces
+repeated rotations before each push. See the measured `n=500` row for
+`--simple` in the benchmark table above for the actual operation count on
+this codebase.
 
 Run this exact comparison locally:
 
@@ -157,12 +242,6 @@ ARG=$(shuf -i 1-1000 -n 500)
 ./push_swap $ARG --medium --bench
 ```
 
-Example result from the current codebase with one such random sample:
-
-| Mode | total_ops |
-| --- | ---: |
-| simple | 32967 |
-| medium | 16967 |
 
 ## Algorithm Justification
 
@@ -171,7 +250,9 @@ The chosen strategies reflect the current implementation and the Push_swap opera
 - `simple` is intentionally quadratic and easy to reason about.
 - `medium` reduces the number of rotations by using rank windows and a second recovery phase.
 - `adaptive` uses the measured disorder to decide which implementation is the most appropriate.
-- `complex` is reserved for the future `O(n log n)` path and is documented here as a placeholder until the real algorithm is finalized.
+- `complex` implements a rank-based quicksort variant with a deterministic
+  midpoint pivot, guaranteeing `O(n log n)` operation count regardless of
+  input order (see the `--complex` section above for the full argument).
 
 ## Resources
 
@@ -179,8 +260,24 @@ The chosen strategies reflect the current implementation and the Push_swap opera
 - The C `read`, `write`, `malloc`, and `free` man pages.
 - Libft and ft_printf, both bundled in this repository.
 - The `checker_linux` binary included in the workspace for local verification.
-- AI usage: ChatGPT/Copilot was used to review README structure, align the documentation with the subject requirements, and refine the benchmark explanation. All content was checked against the repository code before being kept.
 
 ## Links
 
 [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ksoares3991/push-swap)
+
+### AI Usage
+
+- **Claude** was used to (1) statically review the codebase for Norm
+  compliance, memory safety, and logic bugs — every issue it raised was
+  independently verified by compiling with
+  `-Wall -Wextra -Werror -fsanitize=address,undefined` and by running
+  `norminette`, not taken on faith; (2) generate an end-to-end bash/Python
+  test harness (`tester.sh`, `ps_check.py`) that is tooling used during
+  development and is not part of the graded submission; (3) help structure
+  and word this README.
+- **Google Gemini** was used occasionally for (1) interpreting Valgrind
+  error output during debugging, and (2) English localization of this
+  README.
+- No push_swap algorithm or logic code was written by AI. The code policy
+  for this project required all implementation to be done by the learners
+  themselves; AI use was limited to review, testing, and documentation.
