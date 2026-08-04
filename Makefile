@@ -6,7 +6,7 @@
 #    By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/07/17 16:04:49 by vicdos-s          #+#    #+#              #
-#    Updated: 2026/08/03 19:09:04 by vicdos-s         ###   ########.fr        #
+#    Updated: 2026/08/04 16:17:28 by vicdos-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,7 +68,7 @@ fclean: clean
 
 re: fclean all
 
-teste:
+makeclean:
 	make
 	find . -type f -name "*.o" -delete
 
