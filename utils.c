@@ -6,7 +6,7 @@
 /*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/17 16:36:14 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/08/02 23:28:57 by vicdos-s         ###   ########.fr       */
+/*   Updated: 2026/08/03 17:57:50 by vicdos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,15 @@ void	print_error(t_stack *a, t_state *config, char **f_str)
 		free_stack(a);
 	if (config)
 	{
+		if (config->bench)
+			free(config->bench);
 		if (config->b)
 			free_stack(config->b);
 		free(config);
 	}
 	if (f_str)
 		free_parsed_str(f_str);
-	ft_putstr_fd("Error TESTANDO\n", 2);
+	ft_putstr_fd("Error\n", 2);
 	exit(1);
 }
 
