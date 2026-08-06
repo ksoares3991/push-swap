@@ -28,10 +28,10 @@ Current supported selectors in this repository are:
 | Parsing, flags, error handling | `parser_utils.c`, `flag_utils.c`, `utils.c`, `compare_utils.c` | vicdos-s |
 | Main dispatch, disorder metric, adaptive routing | `push_swap.c` | vicdos-s |
 | Medium algorithm (K-sort / chunk-based) | `algo_medium_sort.c`, `algo_medium_sort_utils.c` | vicdos-s and kasoares |
-| Complex algorithm (rank-based quicksort variant) | `algo_complex_sort.c` | kasoares
+| Complex algorithm (rank-based quicksort variant) | `algo_complex_sort.c` | kasoares |
 | Shared utilities, init/free | `init.c`, `algo_sort_utils.c` | vicdos-s |
 | Benchmark subsystem | `bench.c` | vicdos-s |
-| README, testing | — | vicdos-s and kasoares
+| README, testing | — | vicdos-s and kasoares |
 
 Both learners reviewed and understand every algorithm in this repository, as required for the defense.
 

@@ -1,0 +1,5 @@
+Push_swap randomized test inputs
+Generated: 2026-08-04 18:34:09
+Push_swap: ./push_swap
+Checker: ./checker_linux
+
