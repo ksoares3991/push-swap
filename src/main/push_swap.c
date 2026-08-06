@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   push_swap.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/17 16:36:17 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/08/04 17:20:50 by vicdos-s         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "push_swap.h"
 
@@ -48,12 +37,12 @@ static	void	adaptive_select(t_state *config, t_stack *a, float disorder)
 		return (order_three(config));
 	if (a->size <= 5)
 		return (selection_sort(config));
-	if ((disorder < 0.2) || config->strategy == 1)
+	if ((disorder < 0.2) || config->strategy == STRAT_SIMPLE)
 		selection_sort(config);
 	else if ((disorder >= 0.2 && disorder < 0.5)
-		|| config->strategy == 2)
+		|| config->strategy == STRAT_MEDIUM)
 		medium_sort(config);
-	else if ((disorder >= 0.5) || config->strategy == 3)
+	else if ((disorder >= 0.5) || config->strategy == STRAT_COMPLEX)
 		quick_sort(config);
 }
 
@@ -61,14 +50,17 @@ void	select_algorithm(t_state *config, t_stack *a)
 {
 	float	initial_disorder;
 
-	initial_disorder = get_disorder(a);
-	if (!config->strategy || config->strategy == 4)
+	initial_disorder = 0.0;
+	if (!config->strategy || config->strategy == STRAT_ADAPTIVE
+		|| config->bench_mode)
+		initial_disorder = get_disorder(a);
+	if (!config->strategy || config->strategy == STRAT_ADAPTIVE)
 		adaptive_select(config, a, initial_disorder);
-	else if (config->strategy == 1)
+	else if (config->strategy == STRAT_SIMPLE)
 		selection_sort(config);
-	else if (config->strategy == 2)
+	else if (config->strategy == STRAT_MEDIUM)
 		medium_sort(config);
-	else if (config->strategy == 3)
+	else if (config->strategy == STRAT_COMPLEX)
 		quick_sort(config);
 	if (config->total_elements < 1)
 		print_error(a, config, NULL);
@@ -87,6 +79,8 @@ int	main(int ac, char **av)
 	a = init_stack();
 	b = init_stack();
 	config = init_config();
+	if (!a || !b || !config)
+		return (1);
 	config->a = a;
 	config->b = b;
 	parse_and_stack(ac, av, a, config);

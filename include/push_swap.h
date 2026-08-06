@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/20 15:56:33 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/08/04 17:39:38 by vicdos-s         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
@@ -54,6 +43,14 @@ typedef enum e_print
 	PRINT_ON
 }	t_print;
 
+typedef enum e_strategy
+{
+	STRAT_UNSET		= 0,
+	STRAT_SIMPLE 	= 1,
+	STRAT_MEDIUM 	= 2,
+	STRAT_COMPLEX 	= 3,
+	STRAT_ADAPTIVE 	= 4
+}	t_strategy;
 typedef struct s_bench
 {
 	int	count_op[(TOTAL + 1)];
