@@ -222,8 +222,8 @@ Each cell is the worst observed operation count across 10 runs (n=100) or
 Reproduce with:
 
 ```sh
-ARG=$(shuf -i 0-9999 -n 500)
-./push_swap $ARG --bench > /dev/null
+ARG=$(shuf -i 0-9999 -n 500 | tr '\n' ' ')
+./push_swap $ARG --bench
 ```
 
 ### The Real Worst Case for `--simple`
@@ -237,12 +237,10 @@ this codebase.
 Run this exact comparison locally:
 
 ```sh
-ARG=$(shuf -i 1-1000 -n 500)
+ARG=$(shuf -i 0-9999 -n 500 | tr '\n' ' ')
 ./push_swap $ARG --simple --bench
 ./push_swap $ARG --medium --bench
 ```
-
-
 ## Algorithm Justification
 
 The chosen strategies reflect the current implementation and the Push_swap operation model:
@@ -261,11 +259,7 @@ The chosen strategies reflect the current implementation and the Push_swap opera
 - Libft and ft_printf, both bundled in this repository.
 - The `checker_linux` binary included in the workspace for local verification.
 
-## Links
-
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ksoares3991/push-swap)
-
-### AI Usage
+## AI Usage
 
 - **Claude** was used to (1) statically review the codebase for Norm
   compliance, memory safety, and logic bugs — every issue it raised was
@@ -281,3 +275,8 @@ The chosen strategies reflect the current implementation and the Push_swap opera
 - No push_swap algorithm or logic code was written by AI. The code policy
   for this project required all implementation to be done by the learners
   themselves; AI use was limited to review, testing, and documentation.
+
+
+## Links
+
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ksoares3991/push-swap)

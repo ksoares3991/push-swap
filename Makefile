@@ -6,7 +6,7 @@
 #    By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/07/17 16:04:49 by vicdos-s          #+#    #+#              #
-#    Updated: 2026/08/04 18:05:16 by vicdos-s         ###   ########.fr        #
+#    Updated: 2026/08/04 16:17:28 by vicdos-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,6 +67,10 @@ fclean: clean
 	make -C $(PRINTF_DIR) fclean
 
 re: fclean all
+
+makeclean:
+	make
+	find . -type f -name "*.o" -delete
 
 FORCE:
 
