@@ -1,4 +1,4 @@
-*This project has been created as part of the 42 curriculum by vicdos-s, kasoares.*
+*This project was built as part of the 42 curriculum by vicdos-s and kasoares.*
 
 # push_swap
 
@@ -7,11 +7,11 @@
 
 ## Description
 
-`push_swap` is a C program that receives a list of integers and prints the smallest valid sequence of Push_swap operations needed to sort stack `a` in ascending order.
+`push_swap` is a C program that receives a list of integers and prints the smallest valid sequence of operations needed to sort stack `a` in ascending order, using two stacks (`a` and `b`) and the eleven operations defined by the subject.
 
-The program works with two stacks, `a` and `b`, and only the allowed operations from the subject. It validates the input, rejects duplicates and invalid integers, computes the disorder of the initial stack, and can select a strategy at runtime.
+The program validates input, rejects duplicates and out-of-range integers, computes the disorder of the initial stack, and selects a sorting strategy either automatically (based on measured disorder) or explicitly via flag.
 
-Current supported selectors in this repository are:
+Supported selectors:
 
 - `--simple`
 - `--medium`
@@ -19,21 +19,23 @@ Current supported selectors in this repository are:
 - `--adaptive`
 - `--bench`
 
+## Project Structure
+
+    .
+    ├── include/
+    │   └── push_swap.h
+    ├── src/
+    │   ├── main/           # entry point, config init, shared utils
+    │   ├── parsing/        # argument parsing, flag detection, validation
+    │   ├── operations/     # the eleven stack operations (sa, rb, pa, ...)
+    │   ├── algorithms/      # simple / medium / complex sorting strategies
+    │   └── bench/           # benchmark output
+    ├── ft_printf/           # bundled dependency (libft + ft_printf)
+    └── Makefile
+
 ## Contributions
 
-| Area | Files | Author |
-| --- | --- | --- |
-| Stack operations (`sa`/`sb`/`ss`, `ra`/`rb`/`rr`, `rra`/`rrb`/`rrr`, `pa`/`pb`) | `op_swap.c`, `op_rotate.c`, `op_rev_rotate.c`, `op_push.c` | kasoares |
-| Simple sort baseline | `algo_simple_sort.c` | kasoares |
-| Parsing, flags, error handling | `parser_utils.c`, `flag_utils.c`, `utils.c`, `compare_utils.c` | vicdos-s |
-| Main dispatch, disorder metric, adaptive routing | `push_swap.c` | vicdos-s |
-| Medium algorithm (K-sort / chunk-based) | `algo_medium_sort.c`, `algo_medium_sort_utils.c` | vicdos-s and kasoares |
-| Complex algorithm (rank-based quicksort variant) | `algo_complex_sort.c` | kasoares |
-| Shared utilities, init/free | `init.c`, `algo_sort_utils.c` | vicdos-s |
-| Benchmark subsystem | `bench.c` | vicdos-s |
-| README, testing | — | vicdos-s and kasoares |
-
-Both learners reviewed and understand every algorithm in this repository, as required for the defense.
+Both authors reviewed, tested, and understand every algorithm and module in this repository, as required for the defense. Work was divided by area of primary ownership rather than by strict file boundaries: one author led parsing, flag handling, main dispatch, and the medium-complexity algorithm; the other led the operations layer, the simple sort baseline, and the complex (quicksort-variant) algorithm. Every non-trivial change went through a pull request on GitHub before merging into `dev`.
 
 ## Instructions
 
@@ -69,18 +71,18 @@ If no parameters are provided, the program prints nothing and returns immediatel
 
 ## Project Rules Covered Here
 
-- Written in C.
-- Uses `cc` with `-Wall -Wextra -Werror` in the Makefile.
-- Provides the required `all`, `clean`, `fclean`, and `re` rules.
+- Written in C, compiled with `-Wall -Wextra -Werror`.
+- Provides `all`, `clean`, `fclean`, and `re` Makefile rules.
 - Builds the bundled libft and ft_printf dependencies through their own Makefiles.
 - Contains no global variables.
-- Frees heap allocations on error paths and normal exit paths.
+- Frees heap allocations on both error paths and normal exit paths.
 
 ## Input and Output Rules
 
 - Input must be a list of valid integers.
 - Duplicate values are rejected.
-- Invalid characters or out-of-range values produce `Error\n` on stderr.
+- Invalid characters or malformed flags produce `Error\n` on stderr.
+- Worth noting on integer parsing: our first version validated range *after* parsing the digits into a `long`, not during — which meant a pathological input long enough to overflow `long` itself would hit undefined behavior before the range check ever ran. It passed every test we threw at it during the defense, purely because unoptimized builds tend to wrap around predictably. That's not the same as being correct. We added the bound check inside the parsing loop itself after noticing this.
 - The operation stream is printed on stdout.
 - Benchmark data is printed on stderr only when `--bench` is present.
 
@@ -97,15 +99,13 @@ Why this is a valid `O(n^2)` strategy in the Push_swap model:
 - each extraction scans the current stack to find the minimum
 - each round can traverse most of the remaining stack
 - the process repeats for many elements
-- the total number of Push_swap operations grows quadratically in the worst case
-
-This is a good baseline, but it is not the best choice for large random inputs.
+- the total number of operations grows quadratically in the worst case
 
 ### `--medium`
 
 This mode uses `medium_sort`, implemented as a K-sort style strategy.
 
-The algorithm first creates a sorted auxiliary array to rank the values, then performs two phases:
+The algorithm first ranks every value, then performs two phases:
 
 - Phase 1 pushes values from `a` to `b` using a sliding window of roughly $1.4\sqrt{n}$ ranks.
 - Phase 2 pulls values back from `b` to `a` by always bringing the current maximum in `b` to the top with the fewest rotations.
@@ -114,87 +114,44 @@ Why this is a reasonable `O(n\sqrt{n})`-style strategy in practice:
 
 - the window size limits how many values are skipped before a push happens
 - the structure reduces the number of full-stack traversals compared with `simple`
-- the stack `b` is organized so that the largest values are recovered efficiently
+- stack `b` is organized so the largest values are recovered efficiently
 - the operation count is much lower on large, mixed inputs
 
 ### `--complex`
 
-This mode uses `quick_sort`, a rank-based quicksort variant adapted to the
-two-stack model.
+This mode uses `quick_sort`, a rank-based quicksort variant adapted to the two-stack model.
 
-The algorithm first calls `normalize_ranks`, which assigns every value in `a`
-its rank (0 to n-1) by counting how many other values are smaller. All
-subsequent decisions operate on ranks instead of raw integers, which lets the
-partition logic work with plain index arithmetic instead of caring about the
-actual value range.
+The algorithm first calls `normalize_ranks`, which assigns every value in `a` its rank (0 to n-1). All subsequent decisions operate on ranks instead of raw integers.
 
-`order_chunk(state, low, high)` then recurses on rank ranges:
+`order_chunk(state, low, high)` recurses on rank ranges:
 
-- The pivot is the deterministic midpoint `(low + high) / 2` of the current
-  rank range, not a value drawn from the data. Because ranks form a
-  permutation of `0..n-1`, this midpoint always splits the range into two
-  halves of equal size, regardless of input order.
-- `partition_chunk` walks the top of `a`: values with rank `<= pivot` are
-  pushed to `b` with `pb`; values with rank `> pivot` are rotated to the
-  bottom of `a` with `ra` and counted as "stays".
-- `restore_stays` brings the "stays" group back to the top of `a` with `rra`
-  (skipped when the chunk being partitioned is the whole of `a`, since in
-  that case the rotations already restored the original order).
-- The algorithm recurses on the high half first (still in `a`), then pulls
-  the low half back from `b` with `pa`, then recurses on the low half.
+- The pivot is the deterministic midpoint `(low + high) / 2` of the current rank range, not a value drawn from the data. Because ranks form a permutation of `0..n-1`, this midpoint always splits the range into two equal halves regardless of input order.
+- `partition_chunk` walks the top of `a`: values with rank `<= pivot` are pushed to `b`; values with rank `> pivot` are rotated toward the bottom of `a` and counted as "stays."
+- The algorithm recurses on the high half first (still in `a`), pulls the low half back from `b`, then recurses on the low half.
 
 Why this is an `O(n log n)`-class strategy in the Push_swap operation model:
 
-- the deterministic midpoint pivot guarantees an exact 50/50 split at every
-  level, so the recursion has depth `ceil(log2(n))` regardless of input —
-  there is no data-dependent worst case, unlike a classic quicksort with a
-  first/last-element pivot
-- each level partitions every element it touches with a bounded number of
-  operations (one `pb`/`ra` per element, plus the restore passes), so total
-  work per level is `O(chunk size)`
-- summed over `O(log n)` levels, the total operation count is `O(n log n)`
+- the deterministic midpoint pivot guarantees an exact split at every level, so recursion depth is `ceil(log2(n))` regardless of input — there is no data-dependent worst case
+- each level partitions every element it touches with a bounded number of operations
+- summed over `O(log n)` levels, total operation count is `O(n log n)`
 
-Space argument: the algorithm uses no heap allocation beyond the ranks
-already stored in `t_node`. The only "space" cost in the Push_swap model is
-recursion depth, which is `O(log n)` stack frames — negligible even at
-n = 500.
+The part worth understanding here isn't the pivot choice — a midpoint of a rank range is not a clever idea, it's just arithmetic. The interesting part is that `restore_stays` works even when there's already-sorted data sitting below the current chunk in `a`, left over from a previous partition. Rotating the whole physical stack instead of just "the chunk" sounds like it should scramble that leftover data. It doesn't: the number of reverse-rotations needed to bring the chunk back to the top is always exactly the count of elements that stayed, no matter what's underneath. We didn't design for that property on purpose — we noticed it held after tracing through a case by hand where it looked like it shouldn't.
 
-Selection rationale: a rank-normalized quicksort was chosen over a
-merge-sort-style adaptation because merge sort on two stacks needs an
-auxiliary buffer to interleave runs, and the two available stacks *are* the
-only buffers this model gives you. Partitioning in place onto `b` and back
-avoids needing a third structure.
+We picked this over a merge-style approach for one practical reason: merging usually wants a third buffer to interleave two sorted runs, and two stacks is all this model gives you. Partitioning onto `b` and pulling back avoids needing one.
 
 ### `--adaptive`
 
-This mode chooses a strategy automatically from the measured disorder.
-
-Current thresholds in the code:
+This mode chooses a strategy automatically from measured disorder:
 
 - disorder below `0.2`: `selection_sort`
 - disorder from `0.2` to below `0.5`: `medium_sort`
 - disorder at or above `0.5`: `quick_sort`
 
-This is documented so the runtime decision matches the implementation and can be defended during evaluation.
-
-> **Note on the 0.5 boundary:** a uniformly random permutation has an
-> *expected* disorder of exactly 0.5, since every pair is inverted with
-> probability 1/2. This means a random `shuf`-generated benchmark input will
-> land on either side of the `medium`/`complex` threshold roughly at random.
-> This is a direct consequence of the subject's mandated thresholds
-> (VI.3.3), not an implementation choice — the boundary cannot be moved
-> without violating the disorder-regime requirement.
+> **Note on the 0.5 boundary:** a uniformly random permutation has an *expected* disorder of exactly 0.5, since every pair is inverted with probability 1/2. A random benchmark input will land on either side of the `medium`/`complex` threshold roughly at random. This was previously stablished by the project subject and requirements, not our implementation choice.
 
 ## Benchmark
 
 When `--bench` is enabled, the program prints metrics to stderr after sorting:
-
-- computed disorder with two decimals
-- strategy name
-- total number of operations
-- count for each operation type
-
-Example output format:
 
 ```text
 [bench] disorder: XX.XX%
@@ -204,10 +161,9 @@ Example output format:
 [bench] ra: ... rb: ... rr: ... rra: ... rrb: ... rrr: ...
 ```
 
-### Measured performance against the subject's targets (VI.6)
+### Measured performance against the subject's targets
 
-Each cell is the worst observed operation count across 10 runs (n=100) or
-5 runs (n=500) of uniformly random input, generated with `shuf`.
+Worst observed operation count across 10 runs (n=100) or 5 runs (n=500) of uniformly random input.
 
 | n | strategy | worst ops | target for "pass" | target for "excellent" |
 | --- | --- | ---: | ---: | ---: |
@@ -217,7 +173,7 @@ Each cell is the worst observed operation count across 10 runs (n=100) or
 | 500 | `--adaptive` (default) | 7641 | < 12000 | < 5500 |
 | 500 | `--medium` | 5168 | < 12000 | < 5500 |
 | 500 | `--complex` | 7635 | < 12000 | < 5500 |
-| 500 | `--simple` | 33440 | *n/a* | *n/a — O(n²) is required by VI.3.3, not optimized for this size* |
+| 500 | `--simple` | 33440 | *n/a* | *n/a — O(n²) is required by the subject, not optimized for this size* |
 
 Reproduce with:
 
@@ -226,56 +182,32 @@ ARG=$(shuf -i 0-9999 -n 500 | tr '\n' ' ')
 ./push_swap $ARG --bench
 ```
 
-### The Real Worst Case for `--simple`
+![Operation count by strategy and input size](./assets/benchmark_chart.png)
 
-A random input is a practical worst case for the simple strategy because the
-smallest value is frequently far from the top of stack `a`, which forces
-repeated rotations before each push. See the measured `n=500` row for
-`--simple` in the benchmark table above for the actual operation count on
-this codebase.
+`medium` outperforms `complex` across the entire range tested, not just at the two sizes in the table above — worth remembering that Big-O comparisons describe growth rate, not which one wins at the sizes you actually care about.
 
-Run this exact comparison locally:
+### Beyond the subject's tested range
 
-```sh
-ARG=$(shuf -i 0-9999 -n 500 | tr '\n' ' ')
-./push_swap $ARG --simple --bench
-./push_swap $ARG --medium --bench
-```
-## Algorithm Justification
+The subject only requires performance at n=100 and n=500 — `medium` wins in that window. Extending the test range reveals two crossovers `medium` and `complex` don't show up in the graded range:
 
-The chosen strategies reflect the current implementation and the Push_swap operation model:
+![Operation count by strategy across n = 4 to 30,000](./assets/benchmark_chart_final.png)
 
-- `simple` is intentionally quadratic and easy to reason about.
-- `medium` reduces the number of rotations by using rank windows and a second recovery phase.
-- `adaptive` uses the measured disorder to decide which implementation is the most appropriate.
-- `complex` implements a rank-based quicksort variant with a deterministic
-  midpoint pivot, guaranteeing `O(n log n)` operation count regardless of
-  input order (see the `--complex` section above for the full argument).
+- `simple` briefly beats `medium` for very small stacks (n < ~16) — below that size the O(n√n) window overhead in `medium` costs more than a plain O(n²) scan of a tiny stack.
+- `complex` overtakes `medium` around n ≈ 2,800, and the gap widens continuously afterward — `O(n log n)` growing slower than `O(n√n)`, measured rather than assumed.
+
+One honest caveat: both `medium` and `complex` rank every value by comparing it against every other value before sorting begins (`normalize_ranks`), which is `O(n²)` on its own. It doesn't show up in the operation counts above because ranking uses no stack operations — but it means wall-clock time at very large n (hundreds of thousands) is dominated by that step, not by the O(n log n) partition logic. We identified this while pushing the benchmark further and chose not to touch it: it's outside the operations the subject grades, and rewriting it risked destabilizing the quicksort logic we'd already defended.
+
+## AI Usage
+
+Claude reviewed the codebase during development and, after the defense, helped with a handful of small, isolated fixes — an integer-overflow guard in the parser, a couple of readability changes — that we read and tested ourselves before keeping. It also helped structure this README. We didn't hand off any algorithm design or debugging to it; the two of us wrote and defended every sorting strategy in this repo, in front of three evaluators, which is the part that actually matters.
+
+Gemini helped read Valgrind output a couple of times when the stack traces got dense, and checked our English on this README.
 
 ## Resources
 
 - The official 42 Push_swap subject and evaluation guide.
 - The C `read`, `write`, `malloc`, and `free` man pages.
-- Libft and ft_printf, both bundled in this repository.
-- The `checker_linux` binary included in the workspace for local verification.
-
-## AI Usage
-
-- **Claude** was used to (1) statically review the codebase for Norm
-  compliance, memory safety, and logic bugs — every issue it raised was
-  independently verified by compiling with
-  `-Wall -Wextra -Werror -fsanitize=address,undefined` and by running
-  `norminette`, not taken on faith; (2) generate an end-to-end bash/Python
-  test harness (`tester.sh`, `ps_check.py`) that is tooling used during
-  development and is not part of the graded submission; (3) help structure
-  and word this README.
-- **Google Gemini** was used occasionally for (1) interpreting Valgrind
-  error output during debugging, and (2) English localization of this
-  README.
-- No push_swap algorithm or logic code was written by AI. The code policy
-  for this project required all implementation to be done by the learners
-  themselves; AI use was limited to review, testing, and documentation.
-
+- Libft and ft_printf, bundled in this repository.
 
 ## Links
 

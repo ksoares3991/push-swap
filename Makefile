@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2026/07/17 16:04:49 by vicdos-s          #+#    #+#              #
-#    Updated: 2026/08/04 16:17:28 by vicdos-s         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME        = push_swap
 
 CC          = cc
@@ -21,26 +9,26 @@ LIBFT       = $(LIBFT_DIR)/libft.a
 PRINTF_DIR  = ./ft_printf/
 PRINTF      = $(PRINTF_DIR)/libftprintf.a
 
-SRCS_DIR    = .
-SRCS        = $(SRCS_DIR)/init.c \
-              $(SRCS_DIR)/bench.c \
-              $(SRCS_DIR)/utils.c \
-              $(SRCS_DIR)/op_push.c \
-              $(SRCS_DIR)/op_swap.c \
-              $(SRCS_DIR)/op_rotate.c \
-              $(SRCS_DIR)/push_swap.c \
-              $(SRCS_DIR)/flag_utils.c \
-              $(SRCS_DIR)/parser_utils.c \
-		      $(SRCS_DIR)/op_rev_rotate.c \
-              $(SRCS_DIR)/compare_utils.c \
-              $(SRCS_DIR)/algo_sort_utils.c \
-              $(SRCS_DIR)/algo_medium_sort.c \
-			  $(SRCS_DIR)/algo_simple_sort.c \
-			  $(SRCS_DIR)/algo_complex_sort.c\
-              $(SRCS_DIR)/algo_medium_sort_utils.c
+SRCS        = src/main/push_swap.c \
+			  src/main/init.c \
+			  src/main/utils.c \
+			  src/parsing/parser_utils.c \
+			  src/parsing/flag_utils.c \
+			  src/parsing/compare_utils.c \
+			  src/operations/op_push.c \
+			  src/operations/op_swap.c \
+			  src/operations/op_rotate.c \
+			  src/operations/op_rev_rotate.c \
+			  src/algorithms/algo_simple_sort.c \
+			  src/algorithms/algo_medium_sort.c \
+			  src/algorithms/algo_medium_sort_utils.c \
+			  src/algorithms/algo_complex_sort.c \
+			  src/algorithms/algo_sort_utils.c \
+			  src/bench/bench.c
+
 OBJS        = $(SRCS:.c=.o)
 
-INCLUDES    = -I $(LIBFT_DIR) -I $(PRINTF_DIR) -I $(PRINTF_DIR)mandatory -I $(SRCS_DIR)
+INCLUDES    = -I $(LIBFT_DIR) -I $(PRINTF_DIR) -I $(PRINTF_DIR)mandatory -I include
 
 all: $(NAME)
 

@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   bench.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/01 03:08:56 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/08/03 18:52:11 by vicdos-s         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "push_swap.h"
 
@@ -38,11 +27,11 @@ static void	print_bench_ops(t_state *config, int total)
 static void	print_bench_strategy(int strategy, float disorder, t_state *config)
 {
 	ft_putstr_fd("[bench] strategy: ", 2);
-	if (strategy == 1)
+	if (strategy == STRAT_SIMPLE)
 		ft_putstr_fd("Simple / O(n^2)\n", 2);
-	else if (strategy == 2)
+	else if (strategy == STRAT_MEDIUM)
 		ft_putstr_fd("Medium / O(n\xe2\x88\x9an)\n", 2);
-	else if (strategy == 3)
+	else if (strategy == STRAT_COMPLEX)
 		ft_putstr_fd("Complex / O(n log n)\n", 2);
 	else
 	{

@@ -1,16 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/17 16:36:14 by vicdos-s          #+#    #+#             */
-/*   Updated: 2026/08/04 12:50:51 by vicdos-s         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "push_swap.h"
+#include <limits.h>
 
 void	print_error(t_stack *a, t_state *config, char **f_str)
 {
@@ -79,6 +69,8 @@ long	ft_atol(char *s)
 	}
 	while (ft_isdigit(s[i]))
 	{
+		if (result > (2147483647L - (s[i] - '0')) / 10)
+			return (is_negative ? LONG_MIN : LONG_MAX);
 		result = (result * 10) + (s[i] - '0');
 		i++;
 	}
