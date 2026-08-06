@@ -51,6 +51,7 @@ typedef enum e_strategy
 	STRAT_COMPLEX 	= 3,
 	STRAT_ADAPTIVE 	= 4
 }	t_strategy;
+
 typedef struct s_bench
 {
 	int	count_op[(TOTAL + 1)];
