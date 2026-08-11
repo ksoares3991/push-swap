@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: vicdos-s <vicdos-s@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2026/07/17 16:04:49 by vicdos-s          #+#    #+#              #
-#    Updated: 2026/07/21 17:06:24 by vicdos-s         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME        = push_swap
 
 CC          = cc
@@ -21,25 +9,35 @@ LIBFT       = $(LIBFT_DIR)/libft.a
 PRINTF_DIR  = ./ft_printf/
 PRINTF      = $(PRINTF_DIR)/libftprintf.a
 
-# Aqui você lista apenas os arquivos .c do seu push_swap em si!
-SRCS_DIR    = .
-SRCS        = $(SRCS_DIR)/push_swap.c \
-              $(SRCS_DIR)/utils.c
+SRCS        = src/main/push_swap.c \
+			  src/main/init.c \
+			  src/main/utils.c \
+			  src/parsing/parser_utils.c \
+			  src/parsing/flag_utils.c \
+			  src/parsing/compare_utils.c \
+			  src/operations/op_push.c \
+			  src/operations/op_swap.c \
+			  src/operations/op_rotate.c \
+			  src/operations/op_rev_rotate.c \
+			  src/algorithms/algo_simple_sort.c \
+			  src/algorithms/algo_medium_sort.c \
+			  src/algorithms/algo_medium_sort_utils.c \
+			  src/algorithms/algo_complex_sort.c \
+			  src/algorithms/algo_sort_utils.c \
+			  src/bench/bench.c
+
 OBJS        = $(SRCS:.c=.o)
 
-# Adicionado o include do printf
-INCLUDES    = -I $(LIBFT_DIR) -I $(PRINTF_DIR) -I $(PRINTF_DIR)mandatory -I $(SRCS_DIR)
+INCLUDES    = -I $(LIBFT_DIR) -I $(PRINTF_DIR) -I $(PRINTF_DIR)mandatory -I include
 
 all: $(NAME)
 
-# A regra agora usa o compilador (cc) para linkar os .o e as bibliotecas .a
 $(NAME): $(LIBFT) $(PRINTF) $(OBJS)
 	$(CC) -g $(CFLAGS) $(OBJS) $(LIBFT) $(PRINTF) -o $(NAME)
         
 $(LIBFT): FORCE
 	make -C $(LIBFT_DIR)
 
-# Ensinando o Make a compilar o printf antes do push_swap
 $(PRINTF): FORCE
 	make -C $(PRINTF_DIR)
 
@@ -58,7 +56,7 @@ fclean: clean
 
 re: fclean all
 
-teste:
+makeclean:
 	make
 	find . -type f -name "*.o" -delete
 
